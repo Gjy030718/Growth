@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>表达能力训练</title>
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="description" content="个人表达能力追踪与训练系统">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>" type="image/svg+xml">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 0; }
+        :root {
+            --primary: #3b82f6; --primary-light: #dbeafe; --primary-dark: #1d4ed8;
+            --success: #10b981; --success-light: #d1fae5;
+            --warning: #f59e0b; --warning-light: #fef3c7;
+            --danger: #ef4444; --danger-light: #fee2e2;
+            --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b;
+            --border-radius: 8px; --border-color: #e2e8f0; --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        body { background: var(--gray-50); color: var(--gray-800); line-height: 1.5; padding: 0; margin: 0; font-size: 14px; }
+        .container { max-width: 100%; padding: 0 12px; }
+        /* 顶部标题栏 (优化点1) */
+        header { background: white; padding: 10px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; padding: 0 12px; gap: 8px; }
+        .app-title h1 { font-size: 1.2rem; color: var(--primary-dark); font-weight: 700; margin: 0; white-space: nowrap; }
+        .header-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .btn-secondary { padding: 6px 10px; font-size: 0.85rem; background: var(--gray-200); color: var(--gray-700); border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        
+        .nav-tabs { display: flex; overflow-x: auto; background: white; border-bottom: 1px solid var(--border-color); position: sticky; top: 62px; z-index: 99; padding: 0 12px; margin: 0 -12px 12px; }
+        .nav-tabs a { padding: 12px 16px; text-decoration: none; color: var(--gray-600); font-weight: 500; white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .nav-tabs a.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+        
+        main { padding-bottom: 20px; }
+        section { display: none; background: white; border-radius: var(--border-radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
+        section.active { display: block; }
+        h2 { color: var(--gray-800); font-size: 1.1rem; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--primary-light); }
+        
+        /* 首页看板 (优化点2：缩小至60%，一行并排) */
+        .dashboard-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .card { background: white; padding: 8px; border-radius: var(--border-radius); text-align: center; border-left: 3px solid var(--primary); }
+        .card h3 { font-size: 1.4rem; color: var(--primary); margin: 4px 0; }
+        .card p { color: var(--gray-600); font-size: 0.75rem; margin: 2px 0 0; }
+        
+        .key-info-box { background: var(--primary-light); border: 1px solid var(--primary); border-radius: var(--border-radius); padding: 12px; font-family: 'Menlo', 'Consolas', monospace; font-size: 0.85rem; white-space: pre-wrap; cursor: pointer; margin: 12px 0; }
+        .copied-notice { color: var(--success); font-weight: 600; text-align: center; font-size: 0.85rem; display: none; }
+        
+        /* 记录页面 */
+        .smart-paste-card { background: linear-gradient(135deg, #f0f9ff, #f5f3ff); border: 1px solid #c7d2fe; border-radius: var(--border-radius); padding: 12px; margin-bottom: 16px; }
+        #ai-full-feedback { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Menlo', 'Consolas', monospace; font-size: 0.85rem; background: white; resize: vertical; min-height: 100px; margin: 8px 0; box-sizing: border-box; }
+        .btn-primary { padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .compact-form { margin-top: 16px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .form-field { display: flex; flex-direction: column; }
+        .form-field.full { grid-column: span 2; }
+        .form-field label { font-weight: 600; font-size: 0.85rem; color: var(--gray-700); margin-bottom: 4px; }
+        .form-field input, .form-field textarea, .form-field select { padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.9rem; width: 100%; box-sizing: border-box; }
+        .form-field textarea { min-height: 60px; resize: vertical; }
+        .form-field select { height: 36px; }
+        .form-actions { display: flex; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color); }
+        @media (max-width: 480px) { .form-row, .form-field.full { grid-template-columns: 1fr; grid-column: span 1; } }
+        
+        /* 能力仓库 */
+        .ability-cards-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        .ability-card { background: white; border-left: 4px solid var(--primary); border-radius: var(--border-radius); padding: 12px; border: 1px solid var(--border-color); }
+        .ability-card.pending { border-left-color: var(--danger); }
+        .ability-card.mastered { border-left-color: var(--success); }
+        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+        .badge-pending { background: var(--danger-light); color: var(--danger); }
+        .badge-mastered { background: var(--success-light); color: var(--success); }
+        
+        /* 训练日志表格 (优化点3：表头样式) */
+        .table-scroll-container { width: 100%; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: white; }
+        .log-table { width: 100%; min-width: 1000px; border-collapse: collapse; font-size: 0.85rem; }
+        .log-table thead th {
+            background: linear-gradient(135deg, #f0f9ff, #f5f3ff); /* 与一键解析区同背景 */
+            color: #1e293b; /* 黑色字体 */
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #c7d2fe;
+            white-space: nowrap;
+        }
+        .log-table td { padding: 8px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+        .avoid-quote { font-style: italic; color: var(--gray-600); border-left: 2px solid var(--danger); padding-left: 6px; margin: 2px 0; }
+        .suggestion { border-left: 2px solid var(--success); padding-left: 6px; }
+        .suggestion em { color: var(--gray-500); font-style: normal; }
+        .thinking-section { font-size: 0.85rem; }
+        .thinking-section .avoid-thinking { color: var(--danger); margin-bottom: 4px; }
+        .thinking-section .rationale { color: var(--primary); }
+        .exercise { color: var(--warning); font-weight: 500; }
+        
+        footer { text-align: center; padding: 20px 0; color: var(--gray-500); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 20px; }
+        dialog { border: none; border-radius: var(--border-radius); padding: 0; width: 90%; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        dialog article { padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部标题栏 (优化点1：标题改为“表达能力训练”，按钮左移) -->
+        <header>
+            <div class="header-inner">
+                <div class="app-title">
+                    <h1>📈 表达能力训练</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-secondary" onclick="exportData()">📥 备份</button>
+                    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
+                    <button class="btn-secondary" onclick="document.getElementById('import-file').click()">📤 恢复</button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <a href="#home" class="active" onclick="showSection('home')">首页</a>
+            <a href="#record" onclick="showSection('record')">记录</a>
+            <a href="#warehouse" onclick="showSection('warehouse')">能力仓库</a>
+            <a href="#logs" onclick="showSection('logs')">训练日志</a>
+        </nav>
+
+        <main>
+            <section id="home" class="active">
+                <h2>能力成长看板</h2>
+                <!-- 优化点2：看板三块缩小，一行并排 -->
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3 id="mastered-count">0</h3>
+                        <p>已掌握</p>
+                    </div>
+                    <div class="card">
+                        <h3 id="pending-count">0</h3>
+                        <p>待提升</p>
+                    </div>
+                    <div class="card">
+                        <h3 id="session-count">0</h3>
+                        <p>训练次数</p>
+                    </div>
+                </div>
+                <h3>下次对话“导航密匙”</h3>
+                <p>复制以下内容，在下次与AI老师对话开始时粘贴，即可唤醒背景信息。</p>
+                <div class="key-info-box" id="navigation-key" onclick="copyNavigationKey()">【能力追踪报告】
+- 已掌握能力：无。
+- 待提升能力：无。
+- 最新优化依据：暂无。
+- 最新延伸训练：暂无。</div>
+                <div class="copied-notice" id="copy-notice">✅ 已复制到剪贴板！</div>
+            </section>
+
+            <section id="record">
+                <h2>📝 记录本次分析</h2>
+                <div class="smart-paste-card">
+                    <h4>🚀 一键粘贴解析（推荐）</h4>
+                    <p style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 8px;">将AI老师的完整结构化反馈粘贴到下方，系统将自动提取并填充表单。</p>
+                    <div style="background: #dcfce7; border: 1px solid #86efac; border-radius: 6px; padding: 10px; margin: 8px 0; font-family: monospace; font-size: 0.8rem; white-space: pre-wrap;">【示例AI反馈 - 可复制】
+新闻主题：深圳文化馆设计分析
+薄弱能力类型：术语具体化
+错误表达（原话）：“室内直接体验大自然”
+规避思维模式：使用抽象、笼统的描述
+校准与建议（示范）：改为：“通过垂直绿化墙和室内生态中庭，模糊了室内外边界。” 原则：使用具体、专业的术语。
+优化依据（原理）：具体术语能增强画面感、专业性与可信度。
+延伸训练（题目）：请将“这个政策影响很大”转化为2-3个更具象的社会学或政治学术语。
+本次是否改进：首次提出</div>
+                    <label><strong>粘贴AI反馈：</strong></label>
+                    <textarea id="ai-full-feedback" placeholder="将包含'新闻主题'、'薄弱能力类型'、'错误表达'等标题的完整报告粘贴于此..."></textarea>
+                    <div class="button-row">
+                        <button class="btn-primary" onclick="parseAndFillForm()">✨ 智能解析并填充</button>
+                        <button class="btn-secondary" onclick="document.getElementById('ai-full-feedback').value=''">清空</button>
+                    </div>
+                    <div id="parse-hint" style="color: var(--success); font-weight: 500; font-size: 0.85rem; margin-top: 8px; display: none;">✅ 解析完成！表单已自动填充。</div>
+                </div>
+                <h3>手动填写表单</h3>
+                <form id="session-form" class="compact-form">
+                    <div class="form-row"><div class="form-field"><label>时间编号</label><input type="text" id="session-id" placeholder="如：260315-01" required></div><div class="form-field"><label>新闻主题</label><input type="text" id="news-topic" required></div></div>
+                    <div class="form-row"><div class="form-field"><label>薄弱能力类型</label><input type="text" id="deficiency-type" list="ability-list" required><datalist id="ability-list"></datalist></div><div class="form-field"><label>是否改进</label><select id="improvement" required><option value="首次提出">首次提出</option><option value="仍待加强">仍待加强</option><option value="有改进">有改进</option><option value="基本解决">基本解决</option></select></div></div>
+                    <div class="form-field full"><label>错误表达（原话）</label><textarea id="avoid-quote" required></textarea></div>
+                    <div class="form-row"><div class="form-field"><label>规避思维模式</label><textarea id="avoid-thinking" required></textarea></div><div class="form-field"><label>优化依据（原理）</label><textarea id="rationale" required></textarea></div></div>
+                    <div class="form-field full"><label>校准与建议（示范）</label><textarea id="suggestion" required></textarea></div>
+                    <div class="form-field full"><label>延伸训练（题目）</label><textarea id="exercise" required></textarea></div>
+                    <div class="form-actions"><button type="submit" class="btn-primary" style="flex: 2;">💾 保存本次分析</button><button type="reset" class="btn-secondary">🔄 清空表单</button></div>
+                </form>
+            </section>
+
+            <section id="warehouse">
+                <h2>📦 动态能力仓库</h2>
+                <div class="ability-cards-container" id="ability-cards-container"></div>
+            </section>
+
+            <section id="logs">
+                <h2>📋 训练日志</h2>
+                <div class="table-scroll-container">
+                    <!-- 优化点3&4：表头样式更改，并预填两个示例 -->
+                    <table class="log-table">
+                        <thead>
+                            <tr>
+                                <th width="60">序号</th>
+                                <th width="110">薄弱能力类型</th>
+                                <th width="160">规避错误表达 (原话)</th>
+                                <th width="200">校准与建议 (示范)</th>
+                                <th width="220">思维与原理剖析</th>
+                                <th width="180">延伸训练 (题目)</th>
+                                <th width="90">是否改进</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body">
+                            <!-- 示例行1 -->
+                            <tr>
+                                <td>1</td>
+                                <td><span style="background:#fee2e2;color:#dc2626;padding:2px 6px;border-radius:4px;font-size:0.8rem;">术语具体化</span></td>
+                                <td><div class="avoid-quote">“室内直接体验大自然”</div></td>
+                                <td><div class="suggestion"><em>改为：</em>“通过垂直绿化墙和室内生态中庭，模糊了室内外边界。”<br><span style="font-weight:500;color:#047857;">原则：使用具体、专业的术语。</span></div></td>
+                                <td>
+                                    <div class="thinking-section">
+                                        <div class="avoid-thinking"><strong>规避的思维：</strong>使用抽象、笼统的描述。</div>
+                                        <div class="rationale"><strong>优化依据：</strong>具体术语能增强画面感、专业性与可信度。</div>
+                                    </div>
+                                </td>
+                                <td><div class="exercise">请将“这个政策影响很大”转化为2-3个更具象的社会学或政治学术语。</div></td>
+                                <td><span class="status-badge" style="background-color:#fef3c7;color:#d97706;">首次提出</span></td>
+                            </tr>
+                            <!-- 示例行2 -->
+                            <tr>
+                                <td>2</td>
+                                <td><span style="background:#fee2e2;color:#dc2626;padding:2px 6px;border-radius:4px;font-size:0.8rem;">类比校准</span></td>
+                                <td><div class="avoid-quote">“类似于澳门赌城一样360°的沉浸感受”</div></td>
+                                <td><div class="suggestion"><em>改为：</em>“其360°沉浸式环境，让人联想到‘TeamLab艺术展’对感官的引导。”<br><span style="font-weight:500;color:#047857;">原则：使用价值契合的参照物。</span></div></td>
+                                <td>
+                                    <div class="thinking-section">
+                                        <div class="avoid-thinking"><strong>规避的思维：</strong>使用价值不匹配的类比。</div>
+                                        <div class="rationale"><strong>优化依据：</strong>类比物需与主体的核心价值（文化、教育、公益）一致。</div>
+                                    </div>
+                                </td>
+                                <td><div class="exercise">请为“政府的监管像一把双刃剑”寻找三个更精准的替代类比。</div></td>
+                                <td><span class="status-badge" style="background-color:#fecaca;color:#dc2626;">仍待加强</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        <footer><p>您的私人表达能力训练系统 · 数据由您全权掌握</p></footer>
+    </div>
+
+    <dialog id="ability-detail-dialog">
+        <article id="ability-detail-content"></article>
+        <footer style="padding: 16px; text-align: right;"><button class="btn-secondary" onclick="this.closest('dialog').close()">关闭</button></footer>
+    </dialog>
+    <dialog id="session-detail-dialog">
+        <article id="session-detail-content"></article>
+        <footer style="padding: 16px; text-align: right;"><button class="btn-secondary" onclick="this.closest('dialog').close()">关闭</button></footer>
+    </dialog>
+
+    <script>
+        const DB_NAME = 'ExpressTrainingDB';
+        const DB_VERSION = 1;
+        const STORES = { ABILITIES: 'abilities', SESSIONS: 'sessions' };
+        let db = null;
+        const EXAMPLE_DATA = {
+            abilities: [
+                { id: 1, name: "术语具体化", description: "关于'术语具体化'的能力点", status: "pending", createdDate: "2026-03-11T00:00:00.000Z", lastUpdated: "2026-03-11T00:00:00.000Z", optimizationRationale: ["具体术语能增强画面感、专业性与可信度。"], extendedExercises: ["请将'这个政策影响很大'转化为2-3个更具象的社会学或政治学术语。"] },
+                { id: 2, name: "类比校准", description: "关于'类比校准'的能力点", status: "pending", createdDate: "2026-03-11T00:00:00.000Z", lastUpdated: "2026-03-11T00:00:00.000Z", optimizationRationale: ["类比物需与主体的核心价值（文化、教育、公益）一致。"], extendedExercises: ["请为'政府的监管像一把双刃剑'寻找三个更精准的替代类比。"] }
+            ],
+            sessions: [
+                { id: 1, sessionId: "260311-01", newsTopic: "深圳文化馆设计分析", deficiencyType: "术语具体化", avoidQuote: "“室内直接体验大自然”", avoidThinking: "使用抽象、笼统的描述", suggestion: "改为：'通过垂直绿化墙和室内生态中庭，模糊了室内外边界。' 原则：使用具体、专业的术语。", rationale: "具体术语能增强画面感、专业性与可信度。", exercise: "请将'这个政策影响很大'转化为2-3个更具象的社会学或政治学术语。", improvement: "首次提出", date: "2026-03-11T00:00:00.000Z", linkedAbilityId: 1 },
+                { id: 2, sessionId: "260311-02", newsTopic: "深圳文化馆设计分析", deficiencyType: "类比校准", avoidQuote: "“类似于澳门赌城一样360°的沉浸感受”", avoidThinking: "使用价值不匹配的类比", suggestion: "改为：'其360°沉浸式环境，让人联想到TeamLab艺术展对感官的引导。' 原则：使用价值契合的参照物。", rationale: "类比物需与主体的核心价值（文化、教育、公益）一致。", exercise: "请为'政府的监管像一把双刃剑'寻找三个更精准的替代类比。", improvement: "仍待加强", date: "2026-03-11T00:00:00.000Z", linkedAbilityId: 2 }
+            ]
+        };
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onerror = () => reject('数据库打开失败');
+                request.onsuccess = (e) => { db = e.target.result; checkAndSeedData().then(() => { updateAll(); resolve(); }); };
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORES.ABILITIES)) {
+                        const as = db.createObjectStore(STORES.ABILITIES, { keyPath: 'id', autoIncrement: true });
+                        as.createIndex('name', 'name', { unique: false }); as.createIndex('status', 'status', { unique: false });
+                    }
+                    if (!db.objectStoreNames.contains(STORES.SESSIONS)) {
+                        const ss = db.createObjectStore(STORES.SESSIONS, { keyPath: 'id', autoIncrement: true });
+                        ss.createIndex('sessionId', 'sessionId', { unique: true }); ss.createIndex('date', 'date', { unique: false });
+                    }
+                };
+            });
+        }
+        async function checkAndSeedData() {
+            try {
+                const abilities = await dbOp(STORES.ABILITIES, 'getAll');
+                const sessions = await dbOp(STORES.SESSIONS, 'getAll');
+                if (abilities.length === 0 && sessions.length === 0) {
+                    for (const ability of EXAMPLE_DATA.abilities) await dbOp(STORES.ABILITIES, 'add', ability);
+                    for (const session of EXAMPLE_DATA.sessions) await dbOp(STORES.SESSIONS, 'add', session);
+                }
+            } catch (error) { console.error('导入示例数据失败:', error); }
+        }
+        function dbOp(store, mode, data, key) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction([store], mode === 'readonly' ? 'readonly' : 'readwrite');
+                const os = tx.objectStore(store);
+                let req;
+                if (mode === 'add') req = os.add(data);
+                else if (mode === 'put') req = os.put(data);
+                else if (mode === 'delete') req = os.delete(key);
+                else if (mode === 'get') req = os.get(key);
+                else if (mode === 'getAll') req = os.getAll();
+                else reject(`不支持的操作: ${mode}`);
+                req.onsuccess = (e) => resolve(e.target.result);
+                req.onerror = (e) => reject(e.target.error);
+            });
+        }
+        function parseAndFillForm() {
+            const fullText = document.getElementById('ai-full-feedback').value;
+            if (!fullText) { alert('请先粘贴AI反馈内容'); return; }
+            const fieldMap = {
+                '新闻主题[：:]': 'news-topic', '薄弱能力类型[：:]': 'deficiency-type', '错误表达（原话）[：:]': 'avoid-quote', '规避思维模式[：:]': 'avoid-thinking',
+                '校准与建议（示范）[：:]': 'suggestion', '优化依据（原理）[：:]': 'rationale', '延伸训练（题目）[：:]': 'exercise', '本次是否改进[：:]': 'improvement'
+            };
+            for (const [pattern, fieldId] of Object.entries(fieldMap)) {
+                const regex = new RegExp(`${pattern}\\s*([^\\n]+)`);
+                const match = fullText.match(regex);
+                if (match && match[1]) { const field = document.getElementById(fieldId); if (field) field.value = match[1].trim(); }
+            }
+            const now = new Date();
+            const timeId = `${now.getFullYear().toString().slice(-2)}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-01`;
+            document.getElementById('session-id').value = timeId;
+            const hint = document.getElementById('parse-hint');
+            hint.style.display = 'block';
+            setTimeout(() => { hint.style.display = 'none'; }, 2000);
+        }
+        document.getElementById('session-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = {
+                sessionId: document.getElementById('session-id').value.trim(), newsTopic: document.getElementById('news-topic').value.trim(),
+                deficiencyType: document.getElementById('deficiency-type').value.trim(), avoidQuote: document.getElementById('avoid-quote').value.trim(),
+                avoidThinking: document.getElementById('avoid-thinking').value.trim(), suggestion: document.getElementById('suggestion').value.trim(),
+                rationale: document.getElementById('rationale').value.trim(), exercise: document.getElementById('exercise').value.trim(),
+                improvement: document.getElementById('improvement').value
+            };
+            if (!formData.sessionId || !formData.deficiencyType) { alert('请填写时间编号和能力类型'); return; }
+            try {
+                const allAbilities = await dbOp(STORES.ABILITIES, 'getAll');
+                let ability = allAbilities.find(a => a.name === formData.deficiencyType);
+                if (ability) {
+                    if (formData.rationale && !ability.optimizationRationale?.includes(formData.rationale)) { if (!ability.optimizationRationale) ability.optimizationRationale = []; ability.optimizationRationale.push(formData.rationale); }
+                    if (formData.exercise && !ability.extendedExercises?.includes(formData.exercise)) { if (!ability.extendedExercises) ability.extendedExercises = []; ability.extendedExercises.push(formData.exercise); }
+                    ability.lastUpdated = new Date().toISOString(); await dbOp(STORES.ABILITIES, 'put', ability);
+                } else {
+                    ability = { name: formData.deficiencyType, description: `关于"${formData.deficiencyType}"的能力点`, status: 'pending', createdDate: new Date().toISOString(), lastUpdated: new Date().toISOString(), optimizationRationale: formData.rationale ? [formData.rationale] : [], extendedExercises: formData.exercise ? [formData.exercise] : [] };
+                    const id = await dbOp(STORES.ABILITIES, 'add', ability); ability.id = id;
+                }
+                const session = { sessionId: formData.sessionId, newsTopic: formData.newsTopic, deficiencyType: formData.deficiencyType, avoidQuote: formData.avoidQuote, avoidThinking: formData.avoidThinking, suggestion: formData.suggestion, rationale: formData.rationale, exercise: formData.exercise, improvement: formData.improvement, date: new Date().toISOString(), linkedAbilityId: ability.id };
+                await dbOp(STORES.SESSIONS, 'add', session);
+                alert('✅ 分析记录已保存！'); this.reset(); updateAll();
+            } catch (error) { alert('保存失败: ' + error); }
+        });
+        async function updateAll() {
+            const abilities = await dbOp(STORES.ABILITIES, 'getAll');
+            const sessions = await dbOp(STORES.SESSIONS, 'getAll');
+            document.getElementById('mastered-count').textContent = abilities.filter(a => a.status === 'mastered').length;
+            document.getElementById('pending-count').textContent = abilities.filter(a => a.status === 'pending').length;
+            document.getElementById('session-count').textContent = sessions.length;
+            updateNavigationKey(abilities, sessions);
+            updateAbilityDatalist(abilities);
+            renderAbilityCards(abilities);
+        }
+        function updateNavigationKey(abilities, sessions) {
+            const pending = abilities.filter(a => a.status === 'pending').map(a => a.name);
+            const mastered = abilities.filter(a => a.status === 'mastered').map(a => a.name);
+            const latest = sessions.sort((a,b) => new Date(b.date) - new Date(a.date))[0];
+            let text = `【能力追踪报告】\n- 已掌握能力：${mastered.length ? mastered.join('、') : '无'}。\n- 待提升能力：${pending.length ? pending.join('、') : '无'}。\n`;
+            text += latest ? `- 最新优化依据：${latest.rationale || '暂无'}。\n- 最新延伸训练：${latest.exercise || '暂无'}。` : `- 最新优化依据：暂无。\n- 最新延伸训练：暂无。`;
+            document.getElementById('navigation-key').textContent = text;
+        }
+        function updateAbilityDatalist(abilities) {
+            const list = document.getElementById('ability-list'); list.innerHTML = '';
+            abilities.forEach(a => { const option = document.createElement('option'); option.value = a.name; list.appendChild(option); });
+        }
+        function renderAbilityCards(abilities) {
+            const container = document.getElementById('ability-cards-container'); container.innerHTML = '';
+            if (abilities.length === 0) { container.innerHTML = '<p style="text-align:center;color:#64748b;padding:20px;">暂无能力点记录。</p>'; return; }
+            ['pending', 'mastered'].forEach(status => {
+                abilities.filter(a => a.status === status).forEach(ability => {
+                    const card = document.createElement('article'); card.className = `ability-card ${status}`;
+                    card.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                        <h4 style="margin:0;font-size:1rem;">${ability.name}</h4><span class="status-badge badge-${status}">${status === 'pending' ? '待提升' : '已掌握'}</span></div>
+                        <p style="color:#64748b;font-size:0.85rem;margin-bottom:12px;">${ability.description}</p><div style="display:flex;gap:8px;">
+                        <button onclick="viewAbilityDetail(${ability.id})" class="btn-secondary" style="padding:6px 12px;font-size:0.85rem;">详情</button>
+                        ${status === 'pending' ? `<button onclick="markAbility(${ability.id}, 'mastered')" class="btn-primary" style="padding:6px 12px;font-size:0.85rem;">标记为已掌握</button>` :
+                          `<button onclick="markAbility(${ability.id}, 'pending')" class="btn-secondary" style="padding:6px 12px;font-size:0.85rem;">标记为待提升</button>`}</div>`;
+                    container.appendChild(card);
+                });
+            });
+        }
+        async function markAbility(id, newStatus) { if (!confirm(`确定要将此能力点标记为"${newStatus === 'mastered' ? '已掌握' : '待提升'}"吗？`)) { return; } const ability = await dbOp(STORES.ABILITIES, 'get', null, id); if (ability) { ability.status = newStatus; ability.lastUpdated = new Date().toISOString(); await dbOp(STORES.ABILITIES, 'put', ability); updateAll(); } }
+        async function viewAbilityDetail(id) { const ability = await dbOp(STORES.ABILITIES, 'get', null, id); if (!ability) return; const sessions = await dbOp(STORES.SESSIONS, 'getAll'); const relatedSessions = sessions.filter(s => s.linkedAbilityId === id); let html = `<header><h3 style="margin-top:0;">${ability.name}</h3><p>${ability.description}</p><p><strong>状态：</strong><span class="status-badge badge-${ability.status}">${ability.status === 'pending' ? '待提升' : '已掌握'}</span></p></header><hr style="margin:16px 0;">`; if (ability.optimizationRationale?.length) { html += `<h4>优化依据库</h4><ul>`; ability.optimizationRationale.forEach(r => html += `<li style="margin-bottom:8px;">${r}</li>`); html += `</ul>`; } if (ability.extendedExercises?.length) { html += `<h4>延伸训练库</h4><ul>`; ability.extendedExercises.forEach(e => html += `<li style="margin-bottom:8px;">${e}</li>`); html += `</ul>`; } if (relatedSessions.length) { html += `<h4>相关训练记录</h4>`; relatedSessions.forEach(s => { html += `<details style="margin-bottom:10px;border:1px solid #e2e8f0;border-radius:6px;padding:8px;"><summary style="font-weight:500;cursor:pointer;">${s.sessionId} - ${s.newsTopic}</summary><div style="margin-top:8px;padding-left:8px;"><p><strong>原话：</strong>${s.avoidQuote}</p><p><strong>建议：</strong>${s.suggestion}</p></div></details>`; }); } document.getElementById('ability-detail-content').innerHTML = html; document.getElementById('ability-detail-dialog').showModal(); }
+        function showSection(id) { document.querySelectorAll('section').forEach(s => { s.classList.remove('active'); }); document.querySelectorAll('.nav-tabs a').forEach(a => { a.classList.remove('active'); }); document.getElementById(id).classList.add('active'); document.querySelector(`.nav-tabs a[href="#${id}"]`).classList.add('active'); }
+        async function exportData() { try { const abilities = await dbOp(STORES.ABILITIES, 'getAll'); const sessions = await dbOp(STORES.SESSIONS, 'getAll'); const data = { abilities: abilities, sessions: sessions, exportDate: new Date().toISOString(), version: '1.0' }; const dataStr = JSON.stringify(data, null, 2); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([dataStr], { type: 'application/json' })); a.download = `表达训练备份_${new Date().toLocaleDateString().replace(/\//g, '-')}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 100); } catch (error) { alert('备份失败: ' + error); } }
+        async function importData(input) { const file = input.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = async (e) => { try { const data = JSON.parse(e.target.result); if (!data.abilities || !data.sessions) { throw new Error('备份文件格式不正确'); } if (!confirm(`即将导入 ${data.abilities.length} 个能力点和 ${data.sessions.length} 条记录，这将覆盖现有数据。确定继续吗？`)) { input.value = ''; return; } const existingAbilities = await dbOp(STORES.ABILITIES, 'getAll'); const existingSessions = await dbOp(STORES.SESSIONS, 'getAll'); for (const ability of existingAbilities) { await dbOp(STORES.ABILITIES, 'delete', null, ability.id); } for (const session of existingSessions) { await dbOp(STORES.SESSIONS, 'delete', null, session.id); } for (const ability of data.abilities) { await dbOp(STORES.ABILITIES, 'add', ability); } for (const session of data.sessions) { await dbOp(STORES.SESSIONS, 'add', session); } alert(`✅ 数据恢复成功！导入了 ${data.abilities.length} 个能力点和 ${data.sessions.length} 条记录。`); input.value = ''; updateAll(); } catch (error) { alert('导入失败: ' + error.message); input.value = ''; } }; reader.readAsText(file); }
+        function copyNavigationKey() { const text = document.getElementById('navigation-key').textContent; navigator.clipboard.writeText(text).then(() => { const notice = document.getElementById('copy-notice'); notice.style.display = 'block'; setTimeout(() => { notice.style.display = 'none'; }, 2000); }).catch(err => { console.error('复制失败:', err); const textArea = document.createElement('textarea'); textArea.value = text; document.body.appendChild(textArea); textArea.select(); document.execCommand('copy'); document.body.removeChild(textArea); const notice = document.getElementById('copy-notice'); notice.style.display = 'block'; setTimeout(() => { notice.style.display = 'none'; }, 2000); }); }
+        window.addEventListener('DOMContentLoaded', async () => { try { await initDB(); } catch (error) { alert('应用初始化失败，请刷新页面重试。'); } });
+        document.addEventListener('DOMContentLoaded', () => { showSection('home'); });
+    </script>
+</body>
+</html>
