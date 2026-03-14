@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>表达能力训练</title>
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="description" content="个人表达能力追踪与训练系统">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>" type="image/svg+xml">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        * { box-sizing: border-box; font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 0; }
+        :root {
+            --primary: #3b82f6; --primary-light: #dbeafe; --primary-dark: #1d4ed8;
+            --success: #10b981; --success-light: #d1fae5;
+            --warning: #f59e0b; --warning-light: #fef3c7;
+            --danger: #ef4444; --danger-light: #fee2e2;
+            --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b;
+            --border-radius: 8px; --border-color: #e2e8f0; --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        body { background: var(--gray-50); color: var(--gray-800); line-height: 1.5; padding: 0; margin: 0; font-size: 14px; }
+        .container { max-width: 100%; padding: 0 12px; }
+        
+        /* 顶部标题栏 */
+        header { background: white; padding: 10px 0; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; padding: 0 12px; gap: 8px; }
+        .app-title h1 { font-size: 1.2rem; color: var(--primary-dark); font-weight: 700; margin: 0; white-space: nowrap; }
+        .header-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .btn-secondary { padding: 6px 10px; font-size: 0.85rem; background: var(--gray-200); color: var(--gray-700); border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn-success { padding: 6px 10px; font-size: 0.85rem; background: var(--success); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .btn-primary { padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        
+        /* 导航标签 */
+        .nav-tabs { display: flex; overflow-x: auto; background: white; border-bottom: 1px solid var(--border-color); position: sticky; top: 62px; z-index: 99; padding: 0 12px; margin: 0 -12px 12px; }
+        .nav-tabs a { padding: 12px 16px; text-decoration: none; color: var(--gray-600); font-weight: 500; white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .nav-tabs a.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+        
+        /* 主要内容区 */
+        main { padding-bottom: 20px; }
+        section { display: none; background: white; border-radius: var(--border-radius); padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
+        section.active { display: block; }
+        h2 { color: var(--gray-800); font-size: 1.1rem; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--primary-light); display: flex; justify-content: space-between; align-items: center; }
+        .section-header-actions { display: flex; gap: 8px; }
+        
+        /* 首页看板 */
+        .dashboard-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .card { background: white; padding: 8px; border-radius: var(--border-radius); text-align: center; border-left: 3px solid var(--primary); }
+        .card h3 { font-size: 1.4rem; color: var(--primary); margin: 4px 0; }
+        .card p { color: var(--gray-600); font-size: 0.75rem; margin: 2px 0 0; }
+        
+        /* 今日训练推荐卡片 */
+        .today-training-card { background: linear-gradient(135deg, #f0f9ff, #f5f3ff); border: 2px solid var(--primary); border-radius: var(--border-radius); padding: 16px; margin: 16px 0; }
+        .today-training-card h3 { margin-top: 0; color: var(--primary-dark); display: flex; align-items: center; gap: 8px; }
+        .training-details { margin-top: 12px; }
+        .training-exercise { background: white; border-left: 4px solid var(--success); padding: 10px; border-radius: 4px; margin: 8px 0; }
+        .training-actions { display: flex; gap: 8px; margin-top: 12px; }
+        
+        /* 日历视图样式 */
+        .calendar-section { margin-top: 20px; }
+        .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .calendar-month { font-weight: 600; font-size: 1.1rem; color: var(--gray-800); }
+        .calendar-nav { display: flex; gap: 8px; }
+        .calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: 600; color: var(--gray-600); margin-bottom: 8px; padding: 4px 0; border-bottom: 1px solid var(--border-color); }
+        .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .calendar-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; position: relative; }
+        .calendar-day:hover { background-color: var(--gray-100); }
+        .calendar-day.today { background-color: var(--primary-light); color: var(--primary-dark); font-weight: 600; }
+        .calendar-day.has-sessions { background-color: var(--success-light); color: var(--success); font-weight: 600; }
+        .calendar-day.other-month { color: var(--gray-400); }
+        .session-dot { width: 6px; height: 6px; background-color: var(--success); border-radius: 50%; position: absolute; bottom: 4px; }
+        .session-count { position: absolute; top: 2px; right: 2px; font-size: 0.6rem; background: var(--primary); color: white; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        
+        /* 统计图表容器 */
+        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin-top: 16px; }
+        .chart-container { background: white; border-radius: var(--border-radius); padding: 16px; border: 1px solid var(--border-color); }
+        .chart-container canvas { width: 100% !important; height: 250px !important; }
+        
+        /* 成就系统 */
+        .achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 16px; }
+        .achievement-card { background: white; border-radius: var(--border-radius); padding: 12px; text-align: center; border: 1px solid var(--border-color); transition: transform 0.2s; }
+        .achievement-card:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .achievement-card.locked { opacity: 0.6; filter: grayscale(1); }
+        .achievement-icon { font-size: 2rem; margin-bottom: 8px; }
+        .achievement-badge { display: inline-block; padding: 2px 8px; background: var(--warning-light); color: var(--warning); border-radius: 12px; font-size: 0.7rem; font-weight: 600; margin-top: 4px; }
+        
+        /* 其他现有样式 */
+        .key-info-box { background: var(--primary-light); border: 1px solid var(--primary); border-radius: var(--border-radius); padding: 12px; font-family: 'Menlo', 'Consolas', monospace; font-size: 0.85rem; white-space: pre-wrap; cursor: pointer; margin: 12px 0; }
+        .copied-notice { color: var(--success); font-weight: 600; text-align: center; font-size: 0.85rem; display: none; }
+        .smart-paste-card { background: linear-gradient(135deg, #f0f9ff, #f5f3ff); border: 1px solid #c7d2fe; border-radius: var(--border-radius); padding: 12px; margin-bottom: 16px; }
+        #ai-full-feedback { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 6px; font-family: 'Menlo', 'Consolas', monospace; font-size: 0.85rem; background: white; resize: vertical; min-height: 100px; margin: 8px 0; box-sizing: border-box; }
+        .compact-form { margin-top: 16px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+        .form-field { display: flex; flex-direction: column; }
+        .form-field.full { grid-column: span 2; }
+        .form-field label { font-weight: 600; font-size: 0.85rem; color: var(--gray-700); margin-bottom: 4px; }
+        .form-field input, .form-field textarea, .form-field select { padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.9rem; width: 100%; box-sizing: border-box; }
+        .form-field textarea { min-height: 60px; resize: vertical; }
+        .form-field select { height: 36px; }
+        .form-actions { display: flex; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color); }
+        .ability-cards-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+        .ability-card { background: white; border-left: 4px solid var(--primary); border-radius: var(--border-radius); padding: 12px; border: 1px solid var(--border-color); }
+        .ability-card.pending { border-left-color: var(--danger); }
+        .ability-card.mastered { border-left-color: var(--success); }
+        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+        .badge-pending { background: var(--danger-light); color: var(--danger); }
+        .badge-mastered { background: var(--success-light); color: var(--success); }
+        .table-scroll-container { width: 100%; overflow-x: auto; border: 1px solid var(--border-color); border-radius: var(--border-radius); background: white; }
+        .log-table { width: 100%; min-width: 1000px; border-collapse: collapse; font-size: 0.85rem; }
+        .log-table thead th { background: linear-gradient(135deg, #f0f9ff, #f5f3ff); color: #1e293b; padding: 10px 8px; text-align: left; font-weight: 600; border-bottom: 2px solid #c7d2fe; white-space: nowrap; }
+        .log-table td { padding: 8px; border-bottom: 1px solid var(--gray-200); vertical-align: top; }
+        .avoid-quote { font-style: italic; color: var(--gray-600); border-left: 2px solid var(--danger); padding-left: 6px; margin: 2px 0; }
+        .suggestion { border-left: 2px solid var(--success); padding-left: 6px; }
+        .suggestion em { color: var(--gray-500); font-style: normal; }
+        .thinking-section { font-size: 0.85rem; }
+        .thinking-section .avoid-thinking { color: var(--danger); margin-bottom: 4px; }
+        .thinking-section .rationale { color: var(--primary); }
+        .exercise { color: var(--warning); font-weight: 500; }
+        footer { text-align: center; padding: 20px 0; color: var(--gray-500); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 20px; }
+        dialog { border: none; border-radius: var(--border-radius); padding: 0; width: 90%; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        dialog article { padding: 20px; }
+        
+        @media (max-width: 480px) { 
+            .form-row, .form-field.full { grid-template-columns: 1fr; grid-column: span 1; }
+            .stats-container { grid-template-columns: 1fr; }
+            .achievements-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部标题栏 -->
+        <header>
+            <div class="header-inner">
+                <div class="app-title">
+                    <h1>📈 表达能力训练</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-secondary" onclick="exportData()">📥 备份</button>
+                    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(this)">
+                    <button class="btn-secondary" onclick="document.getElementById('import-file').click()">📤 恢复</button>
+                </div>
+            </div>
+        </header>
+
+        <nav class="nav-tabs">
+            <a href="#home" class="active" onclick="showSection('home')">首页</a>
+            <a href="#calendar" onclick="showSection('calendar')">📅 日历</a>
+            <a href="#stats" onclick="showSection('stats')">📊 统计</a>
+            <a href="#achievements" onclick="showSection('achievements')">🏆 成就</a>
+            <a href="#record" onclick="showSection('record')">📝 记录</a>
+            <a href="#warehouse" onclick="showSection('warehouse')">📦 仓库</a>
+            <a href="#logs" onclick="showSection('logs')">📋 日志</a>
+        </nav>
+
+        <main>
+            <!-- 首页 -->
+            <section id="home" class="active">
+                <h2>能力成长看板</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3 id="mastered-count">0</h3>
+                        <p>已掌握</p>
+                    </div>
+                    <div class="card">
+                        <h3 id="pending-count">0</h3>
+                        <p>待提升</p>
+                    </div>
+                    <div class="card">
+                        <h3 id="session-count">0</h3>
+                        <p>训练次数</p>
+                    </div>
+                </div>
+                
+                <!-- 今日训练推荐 -->
+                <div class="today-training-card" id="today-training">
+                    <h3>🎯 今日训练推荐</h3>
+                    <p>根据您的训练历史，为您推荐以下练习：</p>
+                    <div class="training-details" id="training-details">
+                        <p>加载中...</p>
+                    </div>
+                    <div class="training-actions">
+                        <button class="btn-primary" onclick="markTrainingComplete()">✅ 标记完成</button>
+                        <button class="btn-secondary" onclick="refreshTraining()">🔄 换一个</button>
+                    </div>
+                </div>
+                
+                <h3>下次对话"导航密匙"</h3>
+                <p>复制以下内容，在下次与AI老师对话开始时粘贴，即可唤醒背景信息。</p>
+                <div class="key-info-box" id="navigation-key" onclick="copyNavigationKey()">【能力追踪报告】
+- 已掌握能力：无。
+- 待提升能力：无。
+- 最新优化依据：暂无。
+- 最新延伸训练：暂无。</div>
+                <div class="copied-notice" id="copy-notice">✅ 已复制到剪贴板！</div>
+            </section>
+
+            <!-- 日历视图 -->
+            <section id="calendar">
+                <h2>📅 训练日历</h2>
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button class="btn-secondary" onclick="changeMonth(-1)">← 上月</button>
+                        <button class="btn-secondary" onclick="changeMonth(1)">下月 →</button>
+                    </div>
+                    <div class="calendar-month" id="current-month">2026年3月</div>
+                    <button class="btn-primary" onclick="renderCalendar()">今天</button>
+                </div>
+                <div class="calendar-weekdays">
+                    <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+                </div>
+                <div class="calendar-days" id="calendar-days">
+                    <!-- 日历日期会由JS动态生成 -->
+                </div>
+                <div id="date-details" style="margin-top: 20px; padding: 16px; background: var(--gray-50); border-radius: var(--border-radius); border: 1px solid var(--border-color);">
+                    <h4>📅 点击上方日期查看当天训练记录</h4>
+                    <p>有训练记录的日期会显示绿色圆点，点击可查看详情。</p>
+                </div>
+            </section>
+
+            <!-- 统计分析 -->
+            <section id="stats">
+                <h2>📊 训练统计</h2>
+                <div class="stats-container">
+                    <div class="chart-container">
+                        <h4>能力类型分布</h4>
+                        <canvas id="ability-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h4>月度训练频率</h4>
+                        <canvas id="monthly-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h4>改进状态分析</h4>
+                        <canvas id="improvement-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h4>能力掌握进度</h4>
+                        <canvas id="progress-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 成就系统 -->
+            <section id="achievements">
+                <h2>🏆 成就系统</h2>
+                <div class="achievements-grid" id="achievements-grid">
+                    <!-- 成就卡片会由JS动态生成 -->
+                </div>
+            </section>
+
+            <!-- 记录页面 -->
+            <section id="record">
+                <h2>📝 记录本次分析</h2>
+                <div class="smart-paste-card">
+                    <h4>🚀 一键粘贴解析（推荐）</h4>
+                    <p style="color: var(--gray-600); font-size: 0.9rem; margin-bottom: 8px;">将AI老师的完整结构化反馈粘贴到下方，系统将自动提取并填充表单。</p>
+                    <div style="background: #dcfce7; border: 1px solid #86efac; border-radius: 6px; padding: 10px; margin: 8px 0; font-family: monospace; font-size: 0.8rem; white-space: pre-wrap;">【示例AI反馈 - 可复制】
+新闻主题：深圳文化馆设计分析
+薄弱能力类型：术语具体化
+错误表达（原话）："室内直接体验大自然"
+规避思维模式：使用抽象、笼统的描述
+校准与建议（示范）：改为："通过垂直绿化墙和室内生态中庭，模糊了室内外边界。" 原则：使用具体、专业的术语。
+优化依据（原理）：具体术语能增强画面感、专业性与可信度。
+延伸训练（题目）：请将"这个政策影响很大"转化为2-3个更具象的社会学或政治学术语。
+本次是否改进：首次提出</div>
+                    <label><strong>粘贴AI反馈：</strong></label>
+                    <textarea id="ai-full-feedback" placeholder="将包含'新闻主题'、'薄弱能力类型'、'错误表达'等标题的完整报告粘贴于此..."></textarea>
+                    <div class="button-row">
+                        <button class="btn-primary" onclick="parseAndFillForm()">✨ 智能解析并填充</button>
+                        <button class="btn-secondary" onclick="document.getElementById('ai-full-feedback').value=''">清空</button>
+                    </div>
+                    <div id="parse-hint" style="color: var(--success); font-weight: 500; font-size: 0.85rem; margin-top: 8px; display: none;">✅ 解析完成！表单已自动填充。</div>
+                </div>
+                <h3>手动填写表单</h3>
+                <form id="session-form" class="compact-form">
+                    <div class="form-row"><div class="form-field"><label>时间编号</label><input type="text" id="session-id" placeholder="如：260315-01" required></div><div class="form-field"><label>新闻主题</label><input type="text" id="news-topic" required></div></div>
+                    <div class="form-row"><div class="form-field"><label>薄弱能力类型</label><input type="text" id="deficiency-type" list="ability-list" required><datalist id="ability-list"></datalist></div><div class="form-field"><label>是否改进</label><select id="improvement" required><option value="首次提出">首次提出</option><option value="仍待加强">仍待加强</option><option value="有改进">有改进</option><option value="基本解决">基本解决</option></select></div></div>
+                    <div class="form-field full"><label>错误表达（原话）</label><textarea id="avoid-quote" required></textarea></div>
+                    <div class="form-row"><div class="form-field"><label>规避思维模式</label><textarea id="avoid-thinking" required></textarea></div><div class="form-field"><label>优化依据（原理）</label><textarea id="rationale" required></textarea></div></div>
+                    <div class="form-field full"><label>校准与建议（示范）</label><textarea id="suggestion" required></textarea></div>
+                    <div class="form-field full"><label>延伸训练（题目）</label><textarea id="exercise" required></textarea></div>
+                    <div class="form-actions"><button type="submit" class="btn-primary" style="flex: 2;">💾 保存本次分析</button><button type="reset" class="btn-secondary">🔄 清空表单</button></div>
+                </form>
+            </section>
+
+            <!-- 能力仓库 -->
+            <section id="warehouse">
+                <h2>📦 动态能力仓库</h2>
+                <div class="ability-cards-container" id="ability-cards-container"></div>
+            </section>
+
+            <!-- 训练日志 -->
+            <section id="logs">
+                <h2>
+                    训练日志
+                    <div class="section-header-actions">
+                        <button class="btn-success" onclick="exportTableToExcel()">📥 导出为Excel</button>
+                    </div>
+                </h2>
+                <div class="table-scroll-container">
+                    <table class="log-table">
+                        <thead>
+                            <tr>
+                                <th width="60">序号</th>
+                                <th width="110">薄弱能力类型</th>
+                                <th width="160">规避错误表达 (原话)</th>
+                                <th width="200">校准与建议 (示范)</th>
+                                <th width="220">思维与原理剖析</th>
+                                <th width="180">延伸训练 (题目)</th>
+                                <th width="90">是否改进</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body">
+                            <!-- 示例行1 -->
+                            <tr>
+                                <td>1</td>
+                                <td><span style="background:#fee2e2;color:#dc2626;padding:2px 6px;border-radius:4px;font-size:0.8rem;">术语具体化</span></td>
+                                <td><div class="avoid-quote">"室内直接体验大自然"</div></td>
+                                <td><div class="suggestion"><em>改为：</em>"通过垂直绿化墙和室内生态中庭，模糊了室内外边界。"<br><span style="font-weight:500;color:#047857;">原则：使用具体、专业的术语。</span></div></td>
+                                <td>
+                                    <div class="thinking-section">
+                                        <div class="avoid-thinking"><strong>规避的思维：</strong>使用抽象、笼统的描述。</div>
+                                        <div class="rationale"><strong>优化依据：</strong>具体术语能增强画面感、专业性与可信度。</div>
+                                    </div>
+                                </td>
+                                <td><div class="exercise">请将"这个政策影响很大"转化为2-3个更具象的社会学或政治学术语。</div></td>
+                                <td><span class="status-badge" style="background-color:#fef3c7;color:#d97706;">首次提出</span></td>
+                            </tr>
+                            <!-- 示例行2 -->
+                            <tr>
+                                <td>2</td>
+                                <td><span style="background:#fee2e2;color:#dc2626;padding:2px 6px;border-radius:4px;font-size:0.8rem;">类比校准</span></td>
+                                <td><div class="avoid-quote">"类似于澳门赌城一样360°的沉浸感受"</div></td>
+                                <td><div class="suggestion"><em>改为：</em>"其360°沉浸式环境，让人联想到'TeamLab艺术展'对感官的引导。"<br><span style="font-weight:500;color:#047857;">原则：使用价值契合的参照物。</span></div></td>
+                                <td>
+                                    <div class="thinking-section">
+                                        <div class="avoid-thinking"><strong>规避的思维：</strong>使用价值不匹配的类比。</div>
+                                        <div class="rationale"><strong>优化依据：</strong>类比物需与主体的核心价值（文化、教育、公益）一致。</div>
+                                    </div>
+                                </td>
+                                <td><div class="exercise">请为"政府的监管像一把双刃剑"寻找三个更精准的替代类比。</div></td>
+                                <td><span class="status-badge" style="background-color:#fecaca;color:#dc2626;">仍待加强</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+        <footer><p>您的私人表达能力训练系统 · 数据由您全权掌握</p></footer>
+    </div>
+
+    <!-- 弹窗对话框 -->
+    <dialog id="ability-detail-dialog">
+        <article id="ability-detail-content"></article>
+        <footer style="padding: 16px; text-align: right;"><button class="btn-secondary" onclick="this.closest('dialog').close()">关闭</button></footer>
+    </dialog>
+    <dialog id="session-detail-dialog">
+        <article id="session-detail-content"></article>
+        <footer style="padding: 16px; text-align: right;"><button class="btn-secondary" onclick="this.closest('dialog').close()">关闭</button></footer>
+    </dialog>
+    <dialog id="date-detail-dialog">
+        <article id="date-detail-content"></article>
+        <footer style="padding: 16px; text-align: right;"><button class="btn-secondary" onclick="this.closest('dialog').close()">关闭</button></footer>
+    </dialog>
+
+    <!-- 引入外部库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <script>
+        // 数据库配置
+        const DB_NAME = 'ExpressTrainingDB';
+        const DB_VERSION = 2; // 版本号增加，添加成就系统存储
+        const STORES = { 
+            ABILITIES: 'abilities', 
+            SESSIONS: 'sessions',
+            ACHIEVEMENTS: 'achievements' // 新增：成就存储
+        };
+        
+        let db = null;
+        let currentCalendarDate = new Date(); // 日历当前显示的月份
+        
+        // 示例数据
+        const EXAMPLE_DATA = {
+            abilities: [
+                { id: 1, name: "术语具体化", description: "关于'术语具体化'的能力点", status: "pending", createdDate: "2026-03-11T00:00:00.000Z", lastUpdated: "2026-03-11T00:00:00.000Z", optimizationRationale: ["具体术语能增强画面感、专业性与可信度。"], extendedExercises: ["请将'这个政策影响很大'转化为2-3个更具象的社会学或政治学术语。"] },
+                { id: 2, name: "类比校准", description: "关于'类比校准'的能力点", status: "pending", createdDate: "2026-03-11T00:00:00.000Z", lastUpdated: "2026-03-11T00:00:00.000Z", optimizationRationale: ["类比物需与主体的核心价值（文化、教育、公益）一致。"], extendedExercises: ["请为'政府的监管像一把双刃剑'寻找三个更精准的替代类比。"] }
+            ],
+            sessions: [
+                { id: 1, sessionId: "260311-01", newsTopic: "深圳文化馆设计分析", deficiencyType: "术语具体化", avoidQuote: '"室内直接体验大自然"', avoidThinking: "使用抽象、笼统的描述", suggestion: '改为："通过垂直绿化墙和室内生态中庭，模糊了室内外边界。" 原则：使用具体、专业的术语。', rationale: "具体术语能增强画面感、专业性与可信度。", exercise: "请将'这个政策影响很大'转化为2-3个更具象的社会学或政治学术语。", improvement: "首次提出", date: "2026-03-11T00:00:00.000Z", linkedAbilityId: 1 },
+                { id: 2, sessionId: "260311-02", newsTopic: "深圳文化馆设计分析", deficiencyType: "类比校准", avoidQuote: '"类似于澳门赌城一样360°的沉浸感受"', avoidThinking: "使用价值不匹配的类比", suggestion: '改为："其360°沉浸式环境，让人联想到TeamLab艺术展对感官的引导。" 原则：使用价值契合的参照物。', rationale: "类比物需与主体的核心价值（文化、教育、公益）一致。", exercise: "请为'政府的监管像一把双刃剑'寻找三个更精准的替代类比。", improvement: "仍待加强", date: "2026-03-11T00:00:00.000Z", linkedAbilityId: 2 }
+            ],
+            achievements: [
+                { id: 1, name: "初出茅庐", description: "完成第一次表达能力训练", icon: "🎯", unlocked: true, unlockedDate: "2026-03-11T00:00:00.000Z", requirement: "完成1次训练" },
+                { id: 2, name: "持之以恒", description: "连续训练3天", icon: "🔥", unlocked: false, requirement: "连续训练3天" },
+                { id: 3, name: "能力大师", description: "掌握5种表达能力", icon: "🏆", unlocked: false, requirement: "掌握5种能力" },
+                { id: 4, name: "完美表达", description: "10次训练中有8次'有改进'或'基本解决'", icon: "✨", unlocked: false, requirement: "高改进率" },
+                { id: 5, name: "全面覆盖", description: "训练涉及5种不同能力类型", icon: "🌍", unlocked: false, requirement: "5种能力类型" },
+                { id: 6, name: "月度之星", description: "一个月内完成15次训练", icon: "⭐", unlocked: false, requirement: "月度活跃" }
+            ]
+        };
+        
+        // 初始化数据库
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onerror = () => reject('数据库打开失败');
+                request.onsuccess = (e) => { 
+                    db = e.target.result; 
+                    checkAndSeedData().then(() => { 
+                        updateAll(); 
+                        renderCalendar();
+                        updateCharts();
+                        renderAchievements();
+                        updateTodayTraining();
+                        resolve(); 
+                    }); 
+                };
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORES.ABILITIES)) {
+                        const as = db.createObjectStore(STORES.ABILITIES, { keyPath: 'id', autoIncrement: true });
+                        as.createIndex('name', 'name', { unique: false }); 
+                        as.createIndex('status', 'status', { unique: false });
+                    }
+                    if (!db.objectStoreNames.contains(STORES.SESSIONS)) {
+                        const ss = db.createObjectStore(STORES.SESSIONS, { keyPath: 'id', autoIncrement: true });
+                        ss.createIndex('sessionId', 'sessionId', { unique: true }); 
+                        ss.createIndex('date', 'date', { unique: false });
+                    }
+                    // 新增：成就存储
+                    if (!db.objectStoreNames.contains(STORES.ACHIEVEMENTS)) {
+                        const ac = db.createObjectStore(STORES.ACHIEVEMENTS, { keyPath: 'id', autoIncrement: true });
+                        ac.createIndex('unlocked', 'unlocked', { unique: false });
+                    }
+                };
+            });
+        }
+        
+        // 检查并导入示例数据
+        async function checkAndSeedData() {
+            try {
+                const abilities = await dbOp(STORES.ABILITIES, 'getAll');
+                const sessions = await dbOp(STORES.SESSIONS, 'getAll');
+                const achievements = await dbOp(STORES.ACHIEVEMENTS, 'getAll');
+                
+                if (abilities.length === 0 && sessions.length === 0 && achievements.length === 0) {
+                    for (const ability of EXAMPLE_DATA.abilities) await dbOp(STORES.ABILITIES, 'add', ability);
+                    for (const session of EXAMPLE_DATA.sessions) await dbOp(STORES.SESSIONS, 'add', session);
+                    for (const achievement of EXAMPLE_DATA.achievements) await dbOp(STORES.ACHIEVEMENTS, 'add', achievement);
+                }
+            } catch (error) { console.error('导入示例数据失败:', error); }
+        }
+        
+        // 数据库操作封装
+        function dbOp(store, mode, data, key) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction([store], mode === 'readonly' ? 'readonly' : 'readwrite');
+                const os = tx.objectStore(store);
+                let req;
+                if (mode === 'add') req = os.add(data);
+                else if (mode === 'put') req = os.put(data);
+                else if (mode === 'delete') req = os.delete(key);
+                else if (mode === 'get') req = os.get(key);
+                else if (mode === 'getAll') req = os.getAll();
+                else reject(`不支持的操作: ${mode}`);
+                req.onsuccess = (e) => resolve(e.target.result);
+                req.onerror = (e) => reject(e.target.error);
+            });
+        }
+        
+        // 智能解析并填充表单
+        function parseAndFillForm() {
+            const fullText = document.getElementById('ai-full-feedback').value;
+            if (!fullText) { alert('请先粘贴AI反馈内容'); return; }
+            const fieldMap = {
+                '新闻主题[：:]': 'news-topic', '薄弱能力类型[：:]': 'deficiency-type', '错误表达（原话）[：:]': 'avoid-quote', '规避思维模式[：:]': 'avoid-thinking',
+                '校准与建议（示范）[：:]': 'suggestion', '优化依据（原理）[：:]': 'rationale', '延伸训练（题目）[：:]': 'exercise', '本次是否改进[：:]': 'improvement'
+            };
+            for (const [pattern, fieldId] of Object.entries(fieldMap)) {
+                const regex = new RegExp(`${pattern}\\s*([^\\n]+)`);
+                const match = fullText.match(regex);
+                if (match && match[1]) { 
+                    const field = document.getElementById(fieldId); 
+                    if (field) field.value = match[1].trim(); 
+                }
+            }
+            const now = new Date();
+            const timeId = `${now.getFullYear().toString().slice(-2)}${(now.getMonth()+1).toString().padStart(2,'0')}${now.getDate().toString().padStart(2,'0')}-01`;
+            document.getElementById('session-id').value = timeId;
+            const hint = document.getElementById('parse-hint');
+            hint.style.display = 'block';
+            setTimeout(() => { hint.style.display = 'none'; }, 2000);
+        }
+        
+        // 表单提交处理
+        document.getElementById('session-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = {
+                sessionId: document.getElementById('session-id').value.trim(), 
+                newsTopic: document.getElementById('news-topic').value.trim(),
+                deficiencyType: document.getElementById('deficiency-type').value.trim(), 
+                avoidQuote: document.getElementById('avoid-quote').value.trim(),
+                avoidThinking: document.getElementById('avoid-thinking').value.trim(), 
+                suggestion: document.getElementById('suggestion').value.trim(),
+                rationale: document.getElementById('rationale').value.trim(), 
+                exercise: document.getElementById('exercise').value.trim(),
+                improvement: document.getElementById('improvement').value
+            };
+            if (!formData.sessionId || !formData.deficiencyType) { 
+                alert('请填写时间编号和能力类型'); 
+                return; 
+            }
+            try {
+                const allAbilities = await dbOp(STORES.ABILITIES, 'getAll');
+                let ability = allAbilities.find(a => a.name === formData.deficiencyType);
+                if (ability) {
+                    if (formData.rationale && !ability.optimizationRationale?.includes(formData.rationale)) { 
+                        if (!ability.optimizationRationale) ability.optimizationRationale = []; 
+                        ability.optimizationRationale.push(formData.rationale); 
+                    }
+                    if (formData.exercise && !ability.extendedExercises?.includes(formData.exercise)) { 
+                        if (!ability.extendedExercises) ability.extendedExercises = []; 
+                        ability.extendedExercises.push(formData.exercise); 
+                    }
+                    ability.lastUpdated = new Date().toISOString(); 
+                    await dbOp(STORES.ABILITIES, 'put', ability);
+                } else {
+                    ability = { 
+                        name: formData.deficiencyType, 
+                        description: `关于"${formData.deficiencyType}"的能力点`, 
+                        status: 'pending', 
+                        createdDate: new Date().toISOString(), 
+                        lastUpdated: new Date().toISOString(), 
+                        optimizationRationale: formData.rationale ? [formData.rationale] : [], 
+                        extendedExercises: formData.exercise ? [formData.exercise] : [] 
+                    };
+                    const id = await dbOp(STORES.ABILITIES, 'add', ability); 
+                    ability.id = id;
+                }
+                const session = { 
+                    sessionId: formData.sessionId, 
+                    newsTopic: formData.newsTopic, 
+                    deficiencyType: formData.deficiencyType, 
+                    avoidQuote: formData.avoidQuote, 
+                    avoidThinking: formData.avoidThinking, 
+                    suggestion: formData.suggestion, 
+                    rationale: formData.rationale, 
+                    exercise: formData.exercise, 
+                    improvement: formData.improvement, 
+                    date: new Date().toISOString(), 
+                    linkedAbilityId: ability.id 
+                };
+                await dbOp(STORES.SESSIONS, 'add', session);
+                alert('✅ 分析记录已保存！'); 
+                this.reset(); 
+                updateAll();
+                renderCalendar();
+                updateCharts();
+                checkAchievements();
+                updateTodayTraining();
+            } catch (error) { 
+                alert('保存失败: ' + error); 
+            }
+        });
+        
+        // 更新所有显示
+        async function updateAll() {
+            const abilities = await dbOp(STORES.ABILITIES, 'getAll');
+            const sessions = await dbOp(STORES.SESSIONS, 'getAll');
+            
+            document.getElementById('mastered-count').textContent = abilities.filter(a => a.status === 'mastered').length;
+            document.getElementById('pending-count').textContent = abilities.filter(a => a.status === 'pending').length;
+            document.getElementById('session-count').textContent = sessions.length;
+            
+            updateNavigationKey(abilities, sessions);
+            updateAbilityDatalist(abilities);
+            renderAbilityCards(abilities);
+        }
+        
+        // 更新导航密匙
+        function updateNavigationKey(abilities, sessions) {
+            const pending = abilities.filter(a => a.status === 'pending').map(a => a.name);
+            const mastered = abilities.filter(a => a.status === 'mastered').map(a => a.name);
+            const latest = sessions.sort((a,b) => new Date(b.date) - new Date(a.date))[0];
+            let text = `【能力追踪报告】\n- 已掌握能力：${mastered.length ? mastered.join('、') : '无'}。\n- 待提升能力：${pending.length ? pending.join('、') : '无'}。\n`;
+            text += latest ? `- 最新优化依据：${latest.rationale || '暂无'}。\n- 最新延伸训练：${latest.exercise || '暂无'}。` : `- 最新优化依据：暂无。\n- 最新延伸训练：暂无。`;
+            document.getElementById('navigation-key').textContent = text;
+        }
+        
+        // 更新能力下拉列表
+        function updateAbilityDatalist(abilities) {
+            const list = document.getElementById('ability-list'); 
+            list.innerHTML = '';
+            abilities.forEach(a => { 
+                const option = document.createElement('option'); 
+                option.value = a.name; 
+                list.appendChild(option); 
+            });
+        }
+        
+        // 渲染能力卡片
+        function renderAbilityCards(abilities) {
+            const container = document.getElementById('ability-cards-container'); 
+            container.innerHTML = '';
+            if (abilities.length === 0) { 
+                container.innerHTML = '<p style="text-align:center;color:#64748b;padding:20px;">暂无能力点记录。</p>'; 
+                return; 
+            }
+            ['pending', 'mastered'].forEach(status => {
+                abilities.filter(a => a.status === status).forEach(ability => {
+                    const card = document.createElement('article'); 
+                    card.className = `ability-card ${status}`;
+                    card.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                        <h4 style="margin:0;font-size:1rem;">${ability.name}</h4>
+                        <span class="status-badge badge-${status}">${status === 'pending' ? '待提升' : '已掌握'}</span>
+                    </div>
+                    <p style="color:#64748b;font-size:0.85rem;margin-bottom:12px;">${ability.description}</p>
+                    <div style="display:flex;gap:8px;">
+                        <button onclick="viewAbilityDetail(${ability.id})" class="btn-secondary" style="padding:6px 12px;font-size:0.85rem;">详情</button>
+                        ${status === 'pending' ? 
+                            `<button onclick="markAbility(${ability.id}, 'mastered')" class="btn-primary" style="padding:6px 12px;font-size:0.85rem;">标记为已掌握</button>` :
+                            `<button onclick="markAbility(${ability.id}, 'pending')" class="btn-secondary" style="padding:6px 12px;font-size:0.85rem;">标记为待提升</button>`
+                        }
+                    </div>`;
+                    container.appendChild(card);
+                });
+            });
+        }
+        
+        // 标记能力状态
+        async function markAbility(id, newStatus) { 
+            if (!confirm(`确定要将此能力点标记为"${newStatus === 'mastered' ? '已掌握' : '待提升'}"吗？`)) { 
+                return; 
+            } 
+            const ability = await dbOp(STORES.ABILITIES, 'get', null, id); 
+            if (ability) { 
+                ability.status = newStatus; 
+                ability.lastUpdated = new Date().toISOString(); 
+                await dbOp(STORES.ABILITIES, 'put', ability); 
+                updateAll(); 
+                updateCharts();
+                checkAchievements();
+            } 
+        }
+        
+        // 查看能力详情
+        async function viewAbilityDetail(id) { 
+            const ability = await dbOp(STORES.ABILITIES, 'get', null, id); 
+            if (!ability) return; 
+            const sessions = await dbOp(STORES.SESSIONS, 'getAll'); 
+            const relatedSessions = sessions.filter(s => s.linkedAbilityId === id); 
+            let html = `<header>
+                <h3 style="margin-top:0;">${ability.name}</h3>
+                <p>${ability.description}</p>
+                <p><strong>状态：</strong><span class="status-badge badge-${ability.status}">${ability.status === 'pending' ? '待提升' : '已掌握'}</span></p>
+            </header>
+            <hr style="margin:16px 0;">`; 
+            
+            if (ability.optimizationRationale?.length) { 
+                html += `<h4>优化依据库</h4><ul>`; 
+                ability.optimizationRationale.forEach(r => html += `<li style="margin-bottom:8px;">${r}</li>`); 
+                html += `</ul>`; 
+            } 
+            
+            if (ability.extendedExercises?.length) { 
+                html += `<h4>延伸训练库</h4><ul>`; 
+                ability.extendedExercises.forEach(e => html += `<li style="margin-bottom:8px;">${e}</li>`); 
+                html += `</ul>`; 
+            } 
+            
+            if (relatedSessions.length) { 
+                html += `<h4>相关训练记录</h4>`; 
+                relatedSessions.forEach(s => { 
+                    html += `<details style="margin-bottom:10px;border:1px solid #e2e8f0;border-radius:6px;padding:8px;">
+                        <summary style="font-weight:500;cursor:pointer;">${s.sessionId} - ${s.newsTopic}</summary>
+                        <div style="margin-top:8px;padding-left:8px;">
+                            <p><strong>原话：</strong>${s.avoidQuote}</p>
+                            <p><strong>建议：</strong>${s.suggestion}</p>
+                        </div>
+                    </details>`; 
+                }); 
+            } 
+            document.getElementById('ability-detail-content').innerHTML = html; 
+            document.getElementById('ability-detail-dialog').showModal(); 
+        }
+        
+        // 切换页面显示
+        function showSection(id) { 
+            try {
+                document.querySelectorAll('section').forEach(s => { s.classList.remove('active'); }); 
+                document.querySelectorAll('.nav-tabs a').forEach(a => { a.classList.remove('active'); }); 
+                document.getElementById(id).classList.add('active'); 
+                document.querySelector(`.nav-tabs a[href="#${id}"]`).classList.add('active'); 
+                
+                // 根据页面ID执行特定功能
+                if (id === 'stats') {
+                    setTimeout(updateCharts, 100); // 延迟一点确保DOM已准备好
+                } else if (id === 'calendar') {
+                    setTimeout(renderCalendar, 100);
+                } else if (id === 'achievements') {
+                    setTimeout(renderAchievements, 100);
+                }
+            } catch (error) {
+                console.error('切换页面时出错:', error);
+            }
+        }
+        
+        // 数据备份
+        async function exportData() { 
+            try { 
+                const abilities = await dbOp(STORES.ABILITIES, 'getAll'); 
+                const sessions = await dbOp(STORES.SESSIONS, 'getAll'); 
+                const achievements = await dbOp(STORES.ACHIEVEMENTS, 'getAll');
+                const data = { 
+                    abilities: abilities, 
+                    sessions: sessions, 
+                    achievements: achievements,
+                    exportDate: new Date().toISOString(), 
+                    version: '2.0' 
+                }; 
+                const dataStr = JSON.stringify(data, null, 2); 
+                const a = document.createElement('a'); 
+                a.href = URL.createObjectURL(new Blob([dataStr], { type: 'application/json' })); 
+                a.download = `表达训练备份_${new Date().toLocaleDateString().replace(/\//g, '-')}.json`; 
+                a.click(); 
+                setTimeout(() => URL.revokeObjectURL(a.href), 100); 
+            } catch (error) { 
+                alert('备份失败: ' + error); 
+            } 
+        }
+        
+        // 数据恢复
+        async function importData(input) { 
+            const file = input.files[0]; 
+            if (!file) return; 
+            const reader = new FileReader(); 
+            reader.onload = async (e) => { 
+                try { 
+                    const data = JSON.parse(e.target.result); 
+                    if (!data.abilities || !data.sessions) { 
+                        throw new Error('备份文件格式不正确'); 
+                    } 
+                    if (!confirm(`即将导入 ${data.abilities.length} 个能力点和 ${data.sessions.length} 条记录，这将覆盖现有数据。确定继续吗？`)) { 
+                        input.value = ''; 
+                        return; 
+                    } 
+                    const existingAbilities = await dbOp(STORES.ABILITIES, 'getAll'); 
+                    const existingSessions = await dbOp(STORES.SESSIONS, 'getAll'); 
+                    const existingAchievements = await dbOp(STORES.ACHIEVEMENTS, 'getAll');
+                    
+                    for (const ability of existingAbilities) { await dbOp(STORES.ABILITIES, 'delete', null, ability.id); }
+                    for (const session of existingSessions) { await dbOp(STORES.SESSIONS, 'delete', null, session.id); }
+                    for (const achievement of existingAchievements) { await dbOp(STORES.ACHIEVEMENTS, 'delete', null, achievement.id); }
+                    
+                    for (const ability of data.abilities) { await dbOp(STORES.ABILITIES, 'add', ability); }
+                    for (const session of data.sessions) { await dbOp(STORES.SESSIONS, 'add', session); }
+                    if (data.achievements) {
+                        for (const achievement of data.achievements) { await dbOp(STORES.ACHIEVEMENTS, 'add', achievement); }
+                    } else {
+                        for (const achievement of EXAMPLE_DATA.achievements) { await dbOp(STORES.ACHIEVEMENTS, 'add', achievement); }
+                    }
+                    
+                    alert(`✅ 数据恢复成功！导入了 ${data.abilities.length} 个能力点和 ${data.sessions.length} 条记录。`); 
+                    input.value = ''; 
+                    updateAll(); 
+                    renderCalendar();
+                    updateCharts();
+                    renderAchievements();
+                    updateTodayTraining();
+                } catch (error) { 
+                    alert('导入失败: ' + error.message); 
+                    input.value = ''; 
+                } 
+            }; 
+            reader.readAsText(file); 
+        }
+        
+        // 复制导航密匙
+        function copyNavigationKey() { 
+            const text = document.getElementById('navigation-key').textContent; 
+            navigator.clipboard.writeText(text).then(() => { 
+                const notice = document.getElementById('copy-notice'); 
+                notice.style.display = 'block'; 
+                setTimeout(() => { notice.style.display = 'none'; }, 2000); 
+            }).catch(err => { 
+                console.error('复制失败:', err); 
+                const textArea = document.createElement('textarea'); 
+                textArea.value = text; 
+                document.body.appendChild(textArea); 
+                textArea.select(); 
+                document.execCommand('copy'); 
+                document.body.removeChild(textArea); 
+                const notice = document.getElementById('copy-notice'); 
+                notice.style.display = 'block'; 
+                setTimeout(() => { notice.style.display = 'none'; }, 2000); 
+            }); 
+        }
+        
+        // ==================== 日历功能 ====================
+        
+        // 渲染日历
+        async function renderCalendar() {
+            try {
+                const sessions = await dbOp(STORES.SESSIONS, 'getAll');
+                const year = currentCalendarDate.getFullYear();
+                const month = currentCalendarDate.getMonth();
+                
+                // 更新月份显示
+                document.getElementById('current-month').textContent = `${year}年${month + 1}月`;
+                
+                // 计算日历
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const firstDayWeekday = firstDay.getDay();
+                const daysInMonth = lastDay.getDate();
+                
+                const calendarDays = document.getElementById('calendar-days');
+                calendarDays.innerHTML = '';
+                
+                // 上个月的空白天数
+                for (let i = 0; i < firstDayWeekday; i++) {
+                    const prevDate = new Date(year, month, -i);
+                    const day = document.createElement('div');
+                    day.className = 'calendar-day other-month';
+                    day.textContent = prevDate.getDate();
+                    calendarDays.appendChild(day);
+                }
+                
+                // 当前月的天数
+                const today = new Date();
+                const sessionsByDate = {};
+                sessions.forEach(s => {
+                    const dateStr = s.date.slice(0, 10); // YYYY-MM-DD
+                    if (!sessionsByDate[dateStr]) sessionsByDate[dateStr] = [];
+                    sessionsByDate[dateStr].push(s);
+                });
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    const daySessions = sessionsByDate[dateStr] || [];
+                    const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+                    
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    if (isToday) dayElement.classList.add('today');
+                    if (daySessions.length > 0) dayElement.classList.add('has-sessions');
+                    
+                    dayElement.textContent = day;
+                    dayElement.onclick = () => showDateDetails(dateStr, daySessions);
+                    
+                    if (daySessions.length > 0) {
+                        const dot = document.createElement('div');
+                        dot.className = 'session-dot';
+                        dayElement.appendChild(dot);
+                        
+                        if (daySessions.length > 1) {
+                            const count = document.createElement('div');
+                            count.className = 'session-count';
+                            count.textContent = daySessions.length;
+                            dayElement.appendChild(count);
+                        }
+                    }
+                    
+                    calendarDays.appendChild(dayElement);
+                }
+                
+                // 补齐剩余格子
+                const totalCells = 42; // 6行x7列
+                const usedCells = firstDayWeekday + daysInMonth;
+                for (let i = 0; i < totalCells - usedCells; i++) {
+                    const day = document.createElement('div');
+                    day.className = 'calendar-day other-month';
+                    day.textContent = i + 1;
+                    calendarDays.appendChild(day);
+                }
+            } catch (error) {
+                console.error('渲染日历时出错:', error);
+                document.getElementById('calendar-days').innerHTML = 
+                    '<div style="grid-column: span 7; text-align: center; padding: 20px; color: #666;">日历加载失败，请刷新页面重试</div>';
+            }
+        }
+        
+        // 显示日期详情
+        function showDateDetails(dateStr, sessions) {
+            if (sessions.length === 0) {
+                document.getElementById('date-details').innerHTML = `
+                    <h4>📅 ${dateStr}</h4>
+                    <p>这一天没有训练记录。</p>
+                `;
+                return;
+            }
+            
+            let html = `<h4>📅 ${dateStr} - ${sessions.length}次训练</h4>`;
+            sessions.forEach((session, index) => {
+                html += `
+                <div style="margin-bottom: 12px; padding: 12px; background: var(--gray-50); border-radius: var(--border-radius);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                        <strong>${session.deficiencyType}</strong>
+                        <span class="status-badge" style="background-color: ${session.improvement === '首次提出' ? '#fef3c7' : session.improvement === '仍待加强' ? '#fecaca' : '#d1fae5'}; color: ${session.improvement === '首次提出' ? '#d97706' : session.improvement === '仍待加强' ? '#dc2626' : '#047857'};">${session.improvement}</span>
+                    </div>
+                    <p style="margin: 4px 0; font-size: 0.9rem;"><strong>主题：</strong>${session.newsTopic}</p>
+                    <p style="margin: 4px 0; font-size: 0.9rem;"><strong>原话：</strong>${session.avoidQuote}</p>
+                </div>`;
+            });
+            
+            document.getElementById('date-details').innerHTML = html;
+        }
+        
+        // 切换月份
+        function changeMonth(delta) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
+            renderCalendar();
+        }
+        
+        // ==================== 统计图表功能 ====================
+        
+        // 更新所有图表
+       
