@@ -6,6 +6,14 @@
     <title>表达能力训练</title>
     <meta name="theme-color" content="#3b82f6">
     <meta name="description" content="个人表达能力追踪与训练系统">
+    
+    <!-- ✅ PWA 核心：链接应用清单 (已添加) -->
+    <link rel="manifest" href="/Growth-Trainer/manifest.json">
+    
+    <!-- ✅ 苹果设备图标 (增强兼容性) -->
+    <link rel="apple-touch-icon" href="/Growth-Trainer/icon-original-1024.jpg">
+    
+    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>" type="image/svg+xml">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -94,11 +102,66 @@
         footer { text-align: center; padding: 20px 0; color: var(--gray-500); font-size: 0.85rem; border-top: 1px solid var(--border-color); margin-top: 20px; }
         dialog { border: none; border-radius: var(--border-radius); padding: 0; width: 90%; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         dialog article { padding: 20px; }
+        
+        /* PWA 安装提示样式 */
+        #pwa-install-prompt {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 16px;
+            z-index: 1000;
+            max-width: 300px;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+        #pwa-install-prompt.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .install-prompt-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .install-prompt-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #c4b5fd, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .install-prompt-text h4 {
+            margin: 0 0 4px 0;
+            font-size: 0.95rem;
+        }
+        .install-prompt-text p {
+            margin: 0;
+            color: var(--gray-600);
+            font-size: 0.85rem;
+        }
+        .install-prompt-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 顶部标题栏 (优化点1：标题改为“表达能力训练”，按钮左移) -->
+        <!-- 顶部标题栏 (优化点1：标题改为"表达能力训练"，按钮左移) -->
         <header>
             <div class="header-inner">
                 <div class="app-title">
@@ -137,7 +200,7 @@
                         <p>训练次数</p>
                     </div>
                 </div>
-                <h3>下次对话“导航密匙”</h3>
+                <h3>下次对话"导航密匙"</h3>
                 <p>复制以下内容，在下次与AI老师对话开始时粘贴，即可唤醒背景信息。</p>
                 <div class="key-info-box" id="navigation-key" onclick="copyNavigationKey()">【能力追踪报告】
 - 已掌握能力：无。
@@ -159,7 +222,7 @@
 规避思维模式：使用抽象、笼统的描述
 校准与建议（示范）：改为：“通过垂直绿化墙和室内生态中庭，模糊了室内外边界。” 原则：使用具体、专业的术语。
 优化依据（原理）：具体术语能增强画面感、专业性与可信度。
-延伸训练（题目）：请将“这个政策影响很大”转化为2-3个更具象的社会学或政治学术语。
+延伸训练（题目）：请将"这个政策影响很大"转化为2-3个更具象的社会学或政治学术语。
 本次是否改进：首次提出</div>
                     <label><strong>粘贴AI反馈：</strong></label>
                     <textarea id="ai-full-feedback" placeholder="将包含'新闻主题'、'薄弱能力类型'、'错误表达'等标题的完整报告粘贴于此..."></textarea>
@@ -207,30 +270,30 @@
                             <tr>
                                 <td>1</td>
                                 <td><span style="background:#fee2e2;color:#dc2626;padding:2px 6px;border-radius:4px;font-size:0.8rem;">术语具体化</span></td>
-                                <td><div class="avoid-quote">“室内直接体验大自然”</div></td>
-                                <td><div class="suggestion"><em>改为：</em>“通过垂直绿化墙和室内生态中庭，模糊了室内外边界。”<br><span style="font-weight:500;color:#047857;">原则：使用具体、专业的术语。</span></div></td>
+                                <td><div class="avoid-quote">"室内直接体验大自然"</div></td>
+                                <td><div class="suggestion"><em>改为：</em>"通过垂直绿化墙和室内生态中庭，模糊了室内外边界。"<br><span style="font-weight:500;color:#047857;">原则：使用具体、专业的术语。</span></div></td>
                                 <td>
                                     <div class="thinking-section">
                                         <div class="avoid-thinking"><strong>规避的思维：</strong>使用抽象、笼统的描述。</div>
                                         <div class="rationale"><strong>优化依据：</strong>具体术语能增强画面感、专业性与可信度。</div>
                                     </div>
                                 </td>
-                                <td><div class="exercise">请将“这个政策影响很大”转化为2-3个更具象的社会学或政治学术语。</div></td>
+                                <td><div class="exercise">请将"这个政策影响很大"转化为2-3个更具象的社会学或政治学术语。</div></td>
                                 <td><span class="status-badge" style="background-color:#fef3c7;color:#d97706;">首次提出</span></td>
                             </tr>
                             <!-- 示例行2 -->
                             <tr>
                                 <td>2</td>
                                 <td><span style="background:#fee2e2;color:#dc2626;padding:2px 6px;border-radius:4px;font-size:0.8rem;">类比校准</span></td>
-                                <td><div class="avoid-quote">“类似于澳门赌城一样360°的沉浸感受”</div></td>
-                                <td><div class="suggestion"><em>改为：</em>“其360°沉浸式环境，让人联想到‘TeamLab艺术展’对感官的引导。”<br><span style="font-weight:500;color:#047857;">原则：使用价值契合的参照物。</span></div></td>
+                                <td><div class="avoid-quote">"类似于澳门赌城一样360°的沉浸感受"</div></td>
+                                <td><div class="suggestion"><em>改为：</em>"其360°沉浸式环境，让人联想到'TeamLab艺术展'对感官的引导。"<br><span style="font-weight:500;color:#047857;">原则：使用价值契合的参照物。</span></div></td>
                                 <td>
                                     <div class="thinking-section">
                                         <div class="avoid-thinking"><strong>规避的思维：</strong>使用价值不匹配的类比。</div>
                                         <div class="rationale"><strong>优化依据：</strong>类比物需与主体的核心价值（文化、教育、公益）一致。</div>
                                     </div>
                                 </td>
-                                <td><div class="exercise">请为“政府的监管像一把双刃剑”寻找三个更精准的替代类比。</div></td>
+                                <td><div class="exercise">请为"政府的监管像一把双刃剑"寻找三个更精准的替代类比。</div></td>
                                 <td><span class="status-badge" style="background-color:#fecaca;color:#dc2626;">仍待加强</span></td>
                             </tr>
                         </tbody>
@@ -239,6 +302,21 @@
             </section>
         </main>
         <footer><p>您的私人表达能力训练系统 · 数据由您全权掌握</p></footer>
+    </div>
+
+    <!-- PWA 安装提示 -->
+    <div id="pwa-install-prompt">
+        <div class="install-prompt-content">
+            <div class="install-prompt-icon">📈</div>
+            <div class="install-prompt-text">
+                <h4>安装表达能力训练</h4>
+                <p>安装到设备，获得更佳体验，支持离线使用</p>
+            </div>
+        </div>
+        <div class="install-prompt-actions">
+            <button class="btn-secondary" onclick="hideInstallPrompt()">稍后</button>
+            <button class="btn-primary" onclick="installPWA()">安装应用</button>
+        </div>
     </div>
 
     <dialog id="ability-detail-dialog">
@@ -250,6 +328,83 @@
         <footer style="padding: 16px; text-align: right;"><button class="btn-secondary" onclick="this.closest('dialog').close()">关闭</button></footer>
     </dialog>
 
+    <!-- ✅ PWA 核心：Service Worker 注册脚本 (已添加) -->
+    <script>
+        // 注册 Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // 确保路径与您的仓库结构一致
+                navigator.serviceWorker.register('/Growth-Trainer/service-worker.js')
+                    .then(function(registration) {
+                        console.log('Service Worker 注册成功: ', registration.scope);
+                        
+                        // 检查是否有新版本更新
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            console.log('发现新 Service Worker 版本:', newWorker.state);
+                            
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('新内容可用，请刷新页面');
+                                    // 可以在这里添加更新提示
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(err) {
+                        console.log('Service Worker 注册失败: ', err);
+                    });
+            });
+        }
+        
+        // PWA 安装提示
+        let deferredPrompt;
+        const installPrompt = document.getElementById('pwa-install-prompt');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // 阻止浏览器默认的安装提示
+            e.preventDefault();
+            // 保存事件，以便稍后触发
+            deferredPrompt = e;
+            
+            // 显示自定义安装提示
+            setTimeout(() => {
+                installPrompt.classList.add('show');
+            }, 3000); // 3秒后显示安装提示
+        });
+        
+        function installPWA() {
+            if (!deferredPrompt) return;
+            
+            // 显示浏览器的安装提示
+            deferredPrompt.prompt();
+            
+            // 等待用户响应
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('用户接受了安装');
+                } else {
+                    console.log('用户拒绝了安装');
+                }
+                // 清除保存的事件
+                deferredPrompt = null;
+                // 隐藏自定义提示
+                hideInstallPrompt();
+            });
+        }
+        
+        function hideInstallPrompt() {
+            installPrompt.classList.remove('show');
+        }
+        
+        // 当应用成功安装后
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('应用已成功安装');
+            hideInstallPrompt();
+        });
+    </script>
+
+    <!-- 应用主逻辑 -->
     <script>
         const DB_NAME = 'ExpressTrainingDB';
         const DB_VERSION = 1;
