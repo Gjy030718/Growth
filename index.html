@@ -38,6 +38,14 @@
             --border-radius: 8px; 
             --border-color: #e2e8f0; 
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    /* 新增变量 - 解决复盘浮层背景问题 */
+            --surface-color: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --surface: #ffffff;
+            --background: #f8fafc;
+            --radius: 8px;
+
         }
         body { 
             background: var(--gray-50); 
@@ -658,6 +666,213 @@
             background: var(--gray-200);
             color: var(--gray-700);
         }
+
+        /* 复盘浮层样式 */
+        .review-overlay {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            background: var(--surface-color);
+            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+        
+        .review-overlay.active {
+            transform: translateX(0);
+        }
+        
+        .overlay-header {
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        
+        .overlay-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+        
+        .overlay-subtitle {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .overlay-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+        
+        .analysis-type {
+            margin-bottom: 16px;
+        }
+        
+        .type-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        
+        /* 分析类型标签按钮文字增大到14px */
+        .type-btn {
+            padding: 6px 12px;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 14px; /* 从13px增大到14px */
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .type-btn.active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .dimension-section {
+            margin-bottom: 16px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        /* 三个大类标题文字增大到15px */
+        .section-title {
+            font-size: 15px; /* 从14px增大到15px */
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .section-badge {
+            font-size: 11px;
+            padding: 1px 6px;
+            background: var(--background);
+            border-radius: 8px;
+            color: var(--text-light);
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 6px;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .option-checkbox {
+            display: none;
+        }
+        
+        .option-label {
+            display: block;
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .option-checkbox:checked + .option-label {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .other-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+        
+        .overlay-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        
+        .footer-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .cancel-btn {
+            background: var(--background);
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+        
+        .save-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* 雷达图切换按钮 */
+        .radar-switch {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+        
+        .switch-btn {
+            padding: 6px 12px;
+            background: var(--gray-100);
+            border: 1px solid var(--border-color);
+            color: var(--gray-600);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .switch-btn:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .switch-btn:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .switch-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -748,65 +963,48 @@
             <h2>记录分析</h2>
             <div class="form-group">
                 <label>粘贴AI老师的结构化分析报告：</label>
-                <textarea id="ai-report" class="form-control" placeholder="请按照以下格式粘贴AI老师的分析报告：
+                <textarea id="ai-report" class="form-control" placeholder="=== 请严格按照以下格式输出，确保程序正确解析 ===
+[注意]
+1. 维度名称必须使用标准格式：维度一_立论与立场、维度二_逻辑与结构、维度三_论据与信息、维度四_表达与修辞、维度五_思维模式、维度六_传播与效果
+2. 每个问题点必须包含5个字段，顺序不能变
+3. 思维与原理字段必须包含"规避的思维="和"优化依据="，用分号分隔
+4. 错误原话和优化建议如果包含换行，请用"\\n"表示
+===========================================
 
-【新闻分析报告】
-新闻标题：国台办回应赖清德谬论
-分析日期：2026-03-16
-核心问题：整体逻辑松散，缺乏结构化论证
+【新闻标题】国台办回应赖清德谬论
+【分析日期】2026-03-16
+【核心问题】整体逻辑松散，缺乏结构化论证
 
-【整体评估】
-[维度一：立论与立场]
-评估：政治敏锐度高，立场坚定，但价值导向可更突出建设性。
+【六维度评估】
+维度一_立论与立场：政治敏锐度高，立场坚定，但价值导向可更突出建设性。
+维度二_逻辑与结构：结构松散，缺乏"金字塔结构"，论点分散。
+维度三_论据与信息：论据模糊，缺乏具体法理和案例支撑，存在信息盲区。
+维度四_表达与修辞：术语使用不严谨，存在不当类比，需要更精准的表达。
+维度五_思维模式：主要问题为"类比思维"和"泛指思维"。
+维度六_传播与效果：对内说服力强，但对国际读者需补充法理依据。
 
-[维度二：逻辑与结构]
-评估：结构松散，缺乏'金字塔结构'，论点分散。
+【问题点】
+1. 所属维度：维度四_表达与修辞
+   具体子项：术语精准性
+   错误原话：台湾的高度自治权类似于我国内蒙古等自治区一样...
+   优化建议：应严格区分"民族区域自治"与"一国两制下的高度自治"，前者是民族区域自治制度，后者是中央授予的特殊安排
+   思维与原理：规避的思维=类比思维；优化依据=具体术语能增强画面感、专业性与可信度
 
-[维度三：论据与信息]
-评估：论据模糊，缺乏具体法理和案例支撑，存在信息盲区。
+2. 所属维度：维度三_论据与信息
+   具体子项：论据准确性
+   错误原话：他们多次想进联合国都被打回。
+   优化建议：应具体化为"自1971年联合国大会第2758号决议通过以来，台湾地区企图参与联合国及其专门机构的所有图谋均告失败"
+   思维与原理：规避的思维=泛指思维；优化依据=具体数据与法律条文能增强论证权威性
 
-[维度四：表达与修辞]
-评估：术语使用不严谨，存在不当类比，需要更精准的表达。
+3. 所属维度：维度五_思维模式
+   具体子项：思维模式类型
+   错误原话：台独分子如同野草一样疯长...
+   优化建议：应从定义思维出发："台独分裂活动具有长期性、隐蔽性和复杂性，其本质是通过渐进方式改变台湾社会的国家认同"
+   思维与原理：规避的思维=比喻思维；优化依据=定义思维更能揭示问题的本质特征
 
-[维度五：思维模式]
-诊断：错误思维=类比思维/泛指思维；正确思维=定义思维/金字塔结构思维。
-
-[维度六：传播与效果]
-评估：对内说服力强，但对国际读者需补充法理依据。
-
-【综合改进框架】
-三步法：1.定义核心概念 2.引用权威法理 3.对比错误类比
-刻意练习：每周用'三步法'分析一篇新闻
-关键盲区：国际法具体条款、经济文化渗透案例、台湾社会内部不同声音
-
-【具体问题点】
-[问题点1]
-所属维度：维度四-表达与修辞
-具体子项：术语精准性
-错误原话：台湾的高度自治权类似于我国内蒙古等自治区一样...
-优化建议：应严格区分'民族区域自治'与'一国两制下的高度自治'，前者是民族区域自治制度，后者是中央授予的特殊安排
-思维与原理：规避的思维=类比思维；优化依据=具体术语能增强画面感、专业性与可信度
-
-[问题点2]
-所属维度：维度三-论据与信息
-具体子项：论据准确性
-错误原话：他们多次想进联合国都被打回。
-优化建议：应具体化为'自1971年联合国大会第2758号决议通过以来，台湾地区企图参与联合国及其专门机构的所有图谋均告失败'
-思维与原理：规避的思维=泛指思维；优化依据=具体数据与法律条文能增强论证权威性
-
-[问题点3]
-所属维度：维度五-思维模式
-具体子项：思维模式类型
-错误原话：台独分子如同野草一样疯长...
-优化建议：应从定义思维出发：'台独分裂活动具有长期性、隐蔽性和复杂性，其本质是通过渐进方式改变台湾社会的国家认同'
-思维与原理：规避的思维=比喻思维；优化依据=定义思维更能揭示本质特征
-
-[问题点4]
-所属维度：维度二-逻辑与结构
-具体子项：整体结构
-错误原话：台独分子搞渗透，各方面都有影响，经济文化法律都在搞。
-优化建议：应按照'经济渗透-文化渗透-法律滥用'的结构分层论述，每层配具体案例，形成金字塔结构
-思维与原理：规避的思维=线性叙述思维；优化依据=金字塔结构思维能让逻辑更清晰"></textarea>
+【维度覆盖】
+已覆盖：维度一_立论与立场，维度四_表达与修辞
+未覆盖：维度三_论据与信息，维度六_传播与效果"></textarea>
             </div>
             <div class="record-buttons">
                 <button class="btn-clear" onclick="clearReport()">清空</button>
@@ -855,50 +1053,7 @@
                         </tr>
                     </thead>
                     <tbody id="logs-table-body">
-                        <tr>
-                            <td>1</td>
-                            <td><span class="ability-tag tag-expression">表达与修辞：术语精准性</span></td>
-                            <td><div class="avoid-quote">"台湾的高度自治权类似于我国内蒙古等自治区一样..."</div></td>
-                            <td><div class="suggestion">应严格区分"民族区域自治"与"一国两制下的高度自治"，前者是民族区域自治制度，后者是中央授予的特殊安排</div></td>
-                            <td class="thinking">
-                                <div><span class="avoid-thinking">规避的思维：</span>使用不恰当的类比思维</div>
-                                <div><span class="principle">优化依据：</span>具体术语能增强画面感、专业性与可信度</div>
-                            </td>
-                            <td>2026-03-16</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><span class="ability-tag tag-evidence">论据与信息：论据准确性</span></td>
-                            <td><div class="avoid-quote">"他们多次想进联合国都被打回。"</div></td>
-                            <td><div class="suggestion">应具体化为"自1971年联合国大会第2758号决议通过以来，台湾地区企图参与联合国及其专门机构的所有图谋均告失败"</div></td>
-                            <td class="thinking">
-                                <div><span class="avoid-thinking">规避的思维：</span>使用模糊的泛指表述</div>
-                                <div><span class="principle">优化依据：</span>具体法律条文能增强论证权威性</div>
-                            </td>
-                            <td>2026-03-16</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><span class="ability-tag tag-thinking">思维模式：思维模式类型</span></td>
-                            <td><div class="avoid-quote">"台独分子如同野草一样疯长..."</div></td>
-                            <td><div class="suggestion">应从定义思维出发："台独分裂活动具有长期性、隐蔽性和复杂性，其本质是通过渐进方式改变台湾社会的国家认同"</div></td>
-                            <td class="thinking">
-                                <div><span class="avoid-thinking">规避的思维：</span>使用比喻代替定义</div>
-                                <div><span class="principle">优化依据：</span>定义思维更能揭示问题的本质特征</div>
-                            </td>
-                            <td>2026-03-16</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><span class="ability-tag tag-logic">逻辑与结构：整体结构</span></td>
-                            <td><div class="avoid-quote">"台独分子搞渗透，各方面都有影响，经济文化法律都在搞。"</div></td>
-                            <td><div class="suggestion">应按照'经济渗透-文化渗透-法律滥用'的结构分层论述，每层配具体案例，形成金字塔结构</div></td>
-                            <td class="thinking">
-                                <div><span class="avoid-thinking">规避的思维：</span>线性叙述思维，缺乏结构</div>
-                                <div><span class="principle">优化依据：</span>金字塔结构思维能让逻辑更清晰，论证更有力</div>
-                            </td>
-                            <td>2026-03-16</td>
-                        </tr>
+                        <!-- 训练日志将通过JavaScript动态生成 -->
                     </tbody>
                 </table>
             </div>
@@ -911,27 +1066,17 @@
         <section id="reports">
             <h2>分析报告库</h2>
             <div id="reports-list">
-                <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 16px; margin-bottom: 12px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h3 style="margin: 0;">国台办回应赖清德谬论</h3>
-                        <span style="color: var(--gray-600); font-size: 0.9rem;">2026-03-16</span>
-                    </div>
-                    <p style="margin: 8px 0; color: var(--gray-700);">整体逻辑松散，缺乏结构化论证，国际法依据缺失</p>
-                    <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
-                        <span class="ability-tag tag-expression">表达与修辞</span>
-                        <span class="ability-tag tag-evidence">论据与信息</span>
-                        <span class="ability-tag tag-thinking">思维模式</span>
-                        <span class="ability-tag tag-logic">逻辑与结构</span>
-                    </div>
-                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
-                        <p style="font-size: 0.9rem; color: var(--gray-600);"><strong>关键收获：</strong>必须用'金字塔结构'组织论点，用具体法理和案例代替模糊类比</p>
-                    </div>
-                </div>
+                <!-- 分析报告将通过JavaScript动态生成 -->
+            </div>
         </section>
 
         <!-- 能力矩阵页面 -->
         <section id="matrix">
             <h2>六维能力矩阵</h2>
+            <div class="radar-switch">
+                <button class="switch-btn active" onclick="switchRadarMode('error')">错误频率</button>
+                <button class="switch-btn" onclick="switchRadarMode('blindspot')">盲区地图</button>
+            </div>
             <div class="chart-container">
                 <canvas id="matrixRadarChart"></canvas>
             </div>
@@ -949,27 +1094,7 @@
         <section id="warehouse">
             <h2>能力仓库</h2>
             <div id="dimension-warehouse">
-                <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 16px; margin-bottom: 12px;">
-                    <h3 style="margin-bottom: 8px;"><span class="ability-tag tag-expression">表达与修辞</span> (2个问题)</h3>
-                    <div style="margin-left: 16px;">
-                        <p style="margin: 4px 0;"><strong>术语精准性</strong> (1个)</p>
-                        <p style="margin: 4px 0; font-size: 0.9rem; color: var(--gray-600);">台湾的高度自治权类似于我国内蒙古等自治区一样...</p>
-                    </div>
-                </div>
-                <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 16px; margin-bottom: 12px;">
-                    <h3 style="margin-bottom: 8px;"><span class="ability-tag tag-evidence">论据与信息</span> (1个问题)</h3>
-                    <div style="margin-left: 16px;">
-                        <p style="margin: 4px 0;"><strong>论据准确性</strong> (1个)</p>
-                        <p style="margin: 4px 0; font-size: 0.9rem; color: var(--gray-600);">他们多次想进联合国都被打回。</p>
-                    </div>
-                </div>
-                <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 16px; margin-bottom: 12px;">
-                    <h3 style="margin-bottom: 8px;"><span class="ability-tag tag-thinking">思维模式</span> (1个问题)</h3>
-                    <div style="margin-left: 16px;">
-                        <p style="margin: 4px 0;"><strong>思维模式类型</strong> (1个)</p>
-                        <p style="margin: 4px 0; font-size: 0.9rem; color: var(--gray-600);">台独分子如同野草一样疯长...</p>
-                    </div>
-                </div>
+                <!-- 能力仓库内容将通过JavaScript动态生成 -->
             </div>
         </section>
 
@@ -1056,364 +1181,341 @@
         </div>
     </div>
 
+    <!-- 复盘浮层 -->
+    <div class="review-overlay" id="reviewOverlay">
+        <div class="overlay-header">
+            <div class="overlay-title">分析维度复盘</div>
+            <div class="overlay-subtitle">标记已覆盖和遗漏的分析维度</div>
+        </div>
+        
+        <div class="overlay-content">
+            <div class="analysis-type">
+                <div class="section-title">分析类型</div>
+                <div class="type-buttons">
+                    <button class="type-btn active" onclick="setAnalysisType('news')">时政新闻</button>
+                    <button class="type-btn" onclick="setAnalysisType('social')">社会事件</button>
+                    <button class="type-btn" onclick="setAnalysisType('tech')">科技文章</button>
+                    <button class="type-btn" onclick="setAnalysisType('culture')">文化评论</button>
+                    <button class="type-btn" onclick="setAnalysisType('economics')">经济分析</button>
+                    <button class="type-btn" onclick="setAnalysisType('personal')">个人感悟</button>
+                </div>
+            </div>
+            
+            <div class="dimension-section">
+                <div class="section-header">
+                    <div class="section-title">核心分析维度</div>
+                    <div class="section-badge">必选</div>
+                </div>
+                <div class="options-grid" id="coreDimensions">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+            
+            <div class="dimension-section">
+                <div class="section-header">
+                    <div class="section-title">扩展维度</div>
+                    <div class="section-badge">选填</div>
+                </div>
+                <div class="options-grid" id="extendedDimensions">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+            
+            <div class="dimension-section">
+                <div class="section-title">自定义维度</div>
+                <input type="text" class="other-input" id="customInput" placeholder="输入自定义分析维度，用逗号分隔">
+            </div>
+        </div>
+        
+        <div class="overlay-footer">
+            <button class="footer-btn cancel-btn" onclick="closeReviewOverlay()">取消</button>
+            <button class="footer-btn save-btn" onclick="saveReview()">保存</button>
+        </div>
+    </div>
+
     <script>
-        // 预置示例数据
-        const sampleData = {
-            reports: [
-                {
-                    id: 1,
-                    newsTitle: "国台办回应赖清德谬论",
-                    date: "2026-03-16",
-                    coreIssue: "整体逻辑松散，缺乏结构化论证，国际法依据缺失",
-                    dimensions: {
-                        1: "政治敏锐度高，立场坚定，但价值导向可更突出建设性",
-                        2: "结构松散，缺乏'金字塔结构'，论点分散",
-                        3: "论据模糊，缺乏具体法理和案例支撑，存在信息盲区",
-                        4: "术语使用不严谨，存在不当类比，需要更精准的表达",
-                        5: "错误思维=类比思维/泛指思维；正确思维=定义思维/金字塔结构思维",
-                        6: "对内说服力强，但对国际读者需补充法理依据"
-                    },
-                    framework: "三步法：1.定义核心概念 2.引用权威法理 3.对比错误类比",
-                    keyBlindspots: "国际法具体条款（《开罗宣言》、《波茨坦公告》）、经济文化渗透的具体案例、台湾社会内部的不同声音",
-                    practice: "每周用'三步法'分析一篇新闻，建立'论据速查'习惯",
-                    keyInsight: "必须用'金字塔结构'组织论点，用具体法理和案例代替模糊类比"
-                }
-            ],
-            issues: [
+// 数据存储
+        let trainingLogs = JSON.parse(localStorage.getItem('trainingLogs') || '[]');
+        let analysisReports = JSON.parse(localStorage.getItem('analysisReports') || '[]');
+        let currentMonth = new Date();
+        
+        // 六维度定义
+        const dimensions = [
+            { id: 1, name: '立论与立场', color: '#8b5cf6' },
+            { id: 2, name: '逻辑与结构', color: '#3b82f6' },
+            { id: 3, name: '论据与信息', color: '#f59e0b' },
+            { id: 4, name: '表达与修辞', color: '#ef4444' },
+            { id: 5, name: '思维模式', color: '#10b981' },
+            { id: 6, name: '传播与效果', color: '#ec4899' }
+        ];
+        
+        // 子项定义
+        const subItems = {
+            1: ['价值导向', '立场明确性', '建设性'],
+            2: ['结构完整性', '逻辑严密性', '层次清晰度'],
+            3: ['论据准确性', '信息全面性', '数据支撑'],
+            4: ['术语精准性', '表达生动性', '修辞恰当性'],
+            5: ['思维模式类型', '分析深度', '视角多元性'],
+            6: ['受众针对性', '传播效果', '说服力']
+        };
+        
+        // 维度映射表 - 支持多种写法
+        const dimensionMapping = {
+            '维度一': 1, '维度1': 1, '一': 1, '1': 1, '立论': 1, '立场': 1, '立论与立场': 1,
+            '维度二': 2, '维度2': 2, '二': 2, '2': 2, '逻辑': 2, '结构': 2, '逻辑与结构': 2,
+            '维度三': 3, '维度3': 3, '三': 3, '3': 3, '论据': 3, '信息': 3, '论据与信息': 3,
+            '维度四': 4, '维度4': 4, '四': 4, '4': 4, '表达': 4, '修辞': 4, '表达与修辞': 4,
+            '维度五': 5, '维度5': 5, '五': 5, '5': 5, '思维': 5, '模式': 5, '思维模式': 5,
+            '维度六': 6, '维度6': 6, '六': 6, '6': 6, '传播': 6, '效果': 6, '传播与效果': 6
+        };
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initNavigation();
+            updateStats();
+            renderLogsTable();
+            renderReports();
+            updateMatrixChart('error');
+            renderWarehouse();
+            updateTrainingChart();
+            renderCalendar();
+            
+            // 初始化复盘浮层的维度选项
+            renderDimensions();
+            
+            // 如果本地存储没有数据，初始化示例数据
+            if (trainingLogs.length === 0) {
+                initSampleData();
+            }
+        });
+        
+        // 初始化示例数据
+        function initSampleData() {
+            // 示例训练日志
+            const sampleLogs = [
                 {
                     id: 1,
                     reportId: 1,
                     dimension: 4,
-                    subItem: "术语精准性",
-                    wrong: "台湾的高度自治权类似于我国内蒙古等自治区一样...",
-                    suggestion: "应严格区分'民族区域自治'与'一国两制下的高度自治'，前者是民族区域自治制度，后者是中央授予的特殊安排",
-                    thinking: "规避的思维=类比思维；优化依据=具体术语能增强画面感、专业性与可信度",
-                    status: "practicing",
-                    recordDate: "2026-03-16"
+                    subItem: '术语精准性',
+                    wrongExpression: '台湾的高度自治权类似于我国内蒙古等自治区一样...',
+                    suggestion: '应严格区分"民族区域自治"与"一国两制下的高度自治"，前者是民族区域自治制度，后者是中央授予的特殊安排',
+                    wrongThinking: '使用不恰当的类比思维',
+                    correctThinking: '具体术语能增强画面感、专业性与可信度',
+                    status: 'pending',
+                    date: '2026-03-16'
                 },
                 {
                     id: 2,
                     reportId: 1,
                     dimension: 3,
-                    subItem: "论据准确性",
-                    wrong: "他们多次想进联合国都被打回。",
-                    suggestion: "应具体化为'自1971年联合国大会第2758号决议通过以来，台湾地区企图参与联合国及其专门机构的所有图谋均告失败'",
-                    thinking: "规避的思维=泛指思维；优化依据=具体数据与法律条文能增强论证权威性",
-                    status: "practicing",
-                    recordDate: "2026-03-16"
+                    subItem: '论据准确性',
+                    wrongExpression: '他们多次想进联合国都被打回。',
+                    suggestion: '应具体化为"自1971年联合国大会第2758号决议通过以来，台湾地区企图参与联合国及其专门机构的所有图谋均告失败"',
+                    wrongThinking: '使用模糊的泛指表述',
+                    correctThinking: '具体法律条文能增强论证权威性',
+                    status: 'practicing',
+                    date: '2026-03-16'
                 },
                 {
                     id: 3,
                     reportId: 1,
                     dimension: 5,
-                    subItem: "思维模式类型",
-                    wrong: "台独分子如同野草一样疯长...",
-                    suggestion: "应从定义思维出发：'台独分裂活动具有长期性、隐蔽性和复杂性，其本质是通过渐进方式改变台湾社会的国家认同'",
-                    thinking: "规避的思维=比喻思维；优化依据=定义思维更能揭示本质特征",
-                    status: "mastered",
-                    recordDate: "2026-03-15"
+                    subItem: '思维模式类型',
+                    wrongExpression: '台独分子如同野草一样疯长...',
+                    suggestion: '应从定义思维出发："台独分裂活动具有长期性、隐蔽性和复杂性，其本质是通过渐进方式改变台湾社会的国家认同"',
+                    wrongThinking: '使用比喻代替定义',
+                    correctThinking: '定义思维更能揭示问题的本质特征',
+                    status: 'practicing',
+                    date: '2026-03-16'
                 },
                 {
                     id: 4,
                     reportId: 1,
                     dimension: 2,
-                    subItem: "整体结构",
-                    wrong: "台独分子搞渗透，各方面都有影响，经济文化法律都在搞。",
-                    suggestion: "应按照'经济渗透-文化渗透-法律滥用'的结构分层论述，每层配具体案例，形成金字塔结构",
-                    thinking: "规避的思维=线性叙述思维；优化依据=金字塔结构思维能让逻辑更清晰，论证更有力",
-                    status: "pending",
-                    recordDate: "2026-03-14"
-                },
-                {
-                    id: 5,
-                    reportId: 1,
-                    dimension: 1,
-                    subItem: "立场根基牢固性",
-                    wrong: "台湾问题只是两岸之间的内部事务。",
-                    suggestion: "应强调'台湾问题不仅是中国内政，也涉及联合国宪章确立的主权和领土完整原则'",
-                    thinking: "规避的思维=内化思维；优化依据=国际法理能增强立场根基",
-                    status: "practicing",
-                    recordDate: "2026-03-13"
+                    subItem: '整体结构',
+                    wrongExpression: '台独分子搞渗透，各方面都有影响，经济文化法律都在搞。',
+                    suggestion: '应按照"经济渗透-文化渗透-法律滥用"的结构分层论述，每层配具体案例，形成金字塔结构',
+                    wrongThinking: '线性叙述思维，缺乏结构',
+                    correctThinking: '金字塔结构思维能让逻辑更清晰，论证更有力',
+                    status: 'mastered',
+                    date: '2026-03-16'
                 }
-            ]
-        };
-
-        // 六维诊断框架定义
-        const DIMENSIONS = [
-            { id: 1, name: "立论与立场", subs: ["核心论点清晰度", "立场根基牢固性", "价值导向正确性"], color: "#3b82f6", tagClass: "tag-logic" },
-            { id: 2, name: "逻辑与结构", subs: ["整体结构", "逻辑链条", "段落衔接"], color: "#8b5cf6", tagClass: "tag-logic" },
-            { id: 3, name: "论据与信息", subs: ["论据准确性", "论据相关性", "论据效力层级", "信息完整性"], color: "#f59e0b", tagClass: "tag-evidence" },
-            { id: 4, name: "表达与修辞", subs: ["术语精准性", "语言客观性", "修辞恰当性", "句式节奏感"], color: "#ef4444", tagClass: "tag-expression" },
-            { id: 5, name: "思维模式", subs: ["思维深度", "思维广度", "思维模式类型"], color: "#10b981", tagClass: "tag-thinking" },
-            { id: 6, name: "传播与效果", subs: ["目标读者意识", "说服力预判", "社会效果预估"], color: "#ec4899", tagClass: "tag-communication" }
-        ];
-
-        // 全局变量
-        let db = null;
-        let homeRadarChart = null;
-        let matrixRadarChart = null;
-        let currentDate = new Date(2026, 2, 16);
-        let selectedDate = null;
-        let calendarData = {};
-        let currentFilteredIssues = [...sampleData.issues];
-        let currentExportType = null;
-
-        // 初始化数据库
-        function initDB() {
-            const request = indexedDB.open("ExpressionTrainingDB", 5);
+            ];
             
-            request.onerror = (event) => {
-                console.error("数据库打开失败", event);
-                loadSampleData();
+            // 示例分析报告
+            const sampleReport = {
+                id: 1,
+                title: '国台办回应赖清德谬论',
+                date: '2026-03-16',
+                summary: '整体逻辑松散，缺乏结构化论证，国际法依据缺失',
+                overallAssessment: '',
+                improvementFramework: '',
+                fullText: '示例报告全文',
+                coveredAreas: ['维度一_立论与立场', '维度四_表达与修辞'],
+                missedAreas: ['维度三_论据与信息', '维度六_传播与效果']
             };
             
-            request.onsuccess = (event) => {
-                db = event.target.result;
-                console.log("数据库打开成功");
-                checkAndInsertSampleData();
-            };
+            trainingLogs = sampleLogs;
+            analysisReports = [sampleReport];
             
-            request.onupgradeneeded = (event) => {
-                const db = event.target.result;
-                
-                if (!db.objectStoreNames.contains("reports")) {
-                    const reportStore = db.createObjectStore("reports", { keyPath: "id", autoIncrement: true });
-                    reportStore.createIndex("date", "date", { unique: false });
+            localStorage.setItem('trainingLogs', JSON.stringify(trainingLogs));
+            localStorage.setItem('analysisReports', JSON.stringify(analysisReports));
+            
+            // 更新界面
+            updateStats();
+            renderLogsTable();
+            renderReports();
+            updateMatrixChart('error');
+            renderWarehouse();
+            updateTrainingChart();
+        }
+        
+        // 智能提取维度ID
+        function smartExtractDimension(dimensionText) {
+            if (!dimensionText || dimensionText.trim() === '') return 4; // 默认维度四
+            
+            const text = dimensionText.trim();
+            
+            // 1. 尝试匹配标准格式 "维度四_表达与修辞"
+            const standardMatch = text.match(/维度(\d)/);
+            if (standardMatch) {
+                return parseInt(standardMatch[1]);
+            }
+            
+            // 2. 尝试关键词匹配
+            for (const [key, value] of Object.entries(dimensionMapping)) {
+                if (text.includes(key)) {
+                    return value;
                 }
-                
-                if (!db.objectStoreNames.contains("issues")) {
-                    const issueStore = db.createObjectStore("issues", { keyPath: "id", autoIncrement: true });
-                    issueStore.createIndex("reportId", "reportId", { unique: false });
-                    issueStore.createIndex("dimension", "dimension", { unique: false });
-                    issueStore.createIndex("status", "status", { unique: false });
-                    issueStore.createIndex("date", "date", { unique: false });
-                }
-            };
-        }
-
-        // 加载示例数据
-        function loadSampleData() {
-            console.log("使用内存示例数据");
-            renderLogsTable(sampleData.issues);
-            updateDashboard(sampleData);
-            initCalendarData();
-        }
-
-        // 检查并插入示例数据
-        function checkAndInsertSampleData() {
-            if (!db) {
-                loadSampleData();
-                return;
             }
             
-            const transaction = db.transaction(["reports"], "readonly");
-            const store = transaction.objectStore("reports");
-            const countRequest = store.count();
-            
-            countRequest.onsuccess = (event) => {
-                if (event.target.result === 0) {
-                    insertSampleData();
-                } else {
-                    loadAllData();
-                }
-            };
-        }
-
-        // 插入示例数据
-        function insertSampleData() {
-            if (!db) {
-                loadSampleData();
-                return;
+            // 3. 尝试匹配中文数字
+            const chineseNumMatch = text.match(/[一二三四五六]/);
+            if (chineseNumMatch) {
+                const chineseNums = { '一': 1, '二': 2, '三': 3, '四': 4, '五': 5, '六': 6 };
+                return chineseNums[chineseNumMatch[0]] || 4;
             }
             
-            const transaction = db.transaction(["reports", "issues"], "readwrite");
-            const reportStore = transaction.objectStore("reports");
-            const issueStore = transaction.objectStore("issues");
-
-            sampleData.reports.forEach(report => {
-                reportStore.add(report);
-            });
-
-            sampleData.issues.forEach(issue => {
-                issueStore.add(issue);
-            });
-
-            transaction.oncomplete = () => {
-                console.log("示例数据插入成功");
-                loadAllData();
-            };
+            return 4; // 默认维度四
         }
-
-        // 加载所有数据
-        function loadAllData() {
-            if (!db) {
-                loadSampleData();
-                return;
-            }
-            
-            const transaction = db.transaction(["reports", "issues"], "readonly");
-            const reportStore = transaction.objectStore("reports");
-            const issueStore = transaction.objectStore("issues");
-            
-            const reportRequest = reportStore.getAll();
-            const issueRequest = issueStore.getAll();
-            
-            reportRequest.onsuccess = () => {
-                issueRequest.onsuccess = () => {
-                    const data = {
-                        reports: reportRequest.result,
-                        issues: issueRequest.result
-                    };
-                    currentFilteredIssues = data.issues.length > 0 ? data.issues : sampleData.issues;
-                    renderLogsTable(currentFilteredIssues);
-                    updateDashboard(data);
-                    initCalendarData();
-                };
-            };
-        }
-
-        // 切换标签页
-        function switchTab(tabId) {
-            document.querySelectorAll('.nav-tabs a').forEach(a => a.classList.remove('active'));
-            document.querySelector(`.nav-tabs a[data-target="${tabId}"]`).classList.add('active');
-            document.querySelectorAll('section').forEach(section => section.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            
-            if (tabId === 'matrix') {
-                setTimeout(() => {
-                    updateMatrixChart();
-                }, 100);
-            }
-            
-            if (tabId === 'calendar') {
-                setTimeout(() => {
-                    renderCalendar();
-                }, 100);
-            }
-        }
-
-        // 绑定导航标签点击事件
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.nav-tabs a').forEach(a => {
-                a.addEventListener('click', function(e) {
+        
+        // 导航切换
+        function initNavigation() {
+            document.querySelectorAll('.nav-tabs a').forEach(tab => {
+                tab.addEventListener('click', function(e) {
                     e.preventDefault();
-                    switchTab(this.getAttribute('data-target'));
+                    const target = this.getAttribute('data-target');
+                    
+                    // 更新活跃标签
+                    document.querySelectorAll('.nav-tabs a').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示对应区域
+                    document.querySelectorAll('main section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    document.getElementById(target).classList.add('active');
                 });
             });
-            
-            // 点击页面其他地方关闭导出菜单
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.export-container')) {
-                    document.getElementById('export-dropdown').classList.remove('show');
-                }
-            });
-            
-            initDB();
-        });
-
-        // 渲染日志表格
-        function renderLogsTable(issues) {
-            const tbody = document.getElementById('logs-table-body');
-            const empty = document.getElementById('logs-empty');
-            
-            if (issues.length === 0) {
-                tbody.innerHTML = '';
-                empty.style.display = 'block';
-                return;
-            }
-            
-            empty.style.display = 'none';
-            
-            let html = '';
-            issues.forEach((issue, idx) => {
-                const dim = DIMENSIONS.find(d => d.id == issue.dimension) || DIMENSIONS[3];
-                const tagClass = dim.tagClass || 'ability-tag';
-                
-                let thinkingHtml = '';
-                if (issue.thinking) {
-                    const thinkingParts = issue.thinking.split('；');
-                    thinkingParts.forEach(part => {
-                        if (part.includes('规避的思维=')) {
-                            thinkingHtml += `<div><span class="avoid-thinking">规避的思维：</span>${part.replace('规避的思维=', '')}</div>`;
-                        } else if (part.includes('优化依据=')) {
-                            thinkingHtml += `<div><span class="principle">优化依据：</span>${part.replace('优化依据=', '')}</div>`;
-                        } else {
-                            thinkingHtml += `<div>${part}</div>`;
-                        }
-                    });
-                }
-                
-                html += `<tr>
-                    <td>${idx + 1}</td>
-                    <td><span class="ability-tag ${tagClass}">${dim.name}：${issue.subItem}</span></td>
-                    <td><div class="avoid-quote">${issue.wrong}</div></td>
-                    <td><div class="suggestion">${issue.suggestion}</div></td>
-                    <td class="thinking">${thinkingHtml}</td>
-                    <td>${issue.recordDate || ''}</td>
-                </tr>`;
-            });
-            tbody.innerHTML = html;
         }
-
-        // 更新仪表盘
-        function updateDashboard(data) {
-            const issues = data.issues || [];
-            document.getElementById('total-reports').textContent = data.reports?.length || 1;
-            document.getElementById('total-issues').textContent = issues.length;
-            
-            const dimCounts = Array(6).fill(0);
-            issues.forEach(issue => {
-                if (issue.dimension >= 1 && issue.dimension <= 6) {
-                    dimCounts[issue.dimension - 1]++;
+        
+        // 切换标签页
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-tabs a').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-target') === tabId) {
+                    tab.classList.add('active');
                 }
             });
             
-            if (issues.length > 0) {
-                const maxCount = Math.max(...dimCounts);
-                const weakestDimIndex = dimCounts.indexOf(maxCount);
-                document.getElementById('weakest-dim').textContent = `维度${weakestDimIndex + 1}`;
-                document.getElementById('weakest-dim-name').textContent = DIMENSIONS[weakestDimIndex].name;
+            document.querySelectorAll('main section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        // 更新统计数据
+        function updateStats() {
+            const totalReports = analysisReports.length || 1;
+            const totalIssues = trainingLogs.length || 4;
+            
+            document.getElementById('total-reports').textContent = totalReports;
+            document.getElementById('total-issues').textContent = totalIssues;
+            
+            // 计算最薄弱维度
+            if (trainingLogs.length > 0) {
+                const dimensionCounts = {};
+                trainingLogs.forEach(log => {
+                    const dim = log.dimension;
+                    dimensionCounts[dim] = (dimensionCounts[dim] || 0) + 1;
+                });
+                
+                let weakestDim = 1;
+                let maxCount = 0;
+                for (const dim in dimensionCounts) {
+                    if (dimensionCounts[dim] > maxCount) {
+                        maxCount = dimensionCounts[dim];
+                        weakestDim = parseInt(dim);
+                    }
+                }
+                
+                document.getElementById('weakest-dim').textContent = `维度${weakestDim}`;
+                document.getElementById('weakest-dim-name').textContent = dimensions[weakestDim-1].name;
             }
             
-            const mastered = issues.filter(i => i.status === 'mastered').length;
-            const practicing = issues.filter(i => i.status === 'practicing').length;
-            const pending = issues.filter(i => i.status === 'pending' || !i.status).length;
+            // 计算掌握状态
+            const mastered = trainingLogs.filter(log => log.status === 'mastered').length;
+            const practicing = trainingLogs.filter(log => log.status === 'practicing').length;
+            const pending = trainingLogs.filter(log => log.status === 'pending').length;
             
             document.getElementById('mastered-count').textContent = mastered;
             document.getElementById('practicing-count').textContent = practicing;
             document.getElementById('pending-count').textContent = pending;
+            
+            // 更新首页雷达图
+            updateHomeRadarChart();
         }
-
-        // 更新能力矩阵图表
-        function updateMatrixChart() {
-            const issues = sampleData.issues;
-            const dimCounts = Array(6).fill(0);
-            issues.forEach(issue => {
-                if (issue.dimension >= 1 && issue.dimension <= 6) {
-                    dimCounts[issue.dimension - 1]++;
-                }
+        
+        // 更新首页雷达图
+        function updateHomeRadarChart() {
+            const ctx = document.getElementById('homeRadarChart').getContext('2d');
+            
+            // 计算各维度的平均分（基于状态）
+            const dimensionScores = dimensions.map(dim => {
+                const dimLogs = trainingLogs.filter(log => log.dimension === dim.id);
+                if (dimLogs.length === 0) return 30; // 默认分
+                
+                let totalScore = 0;
+                dimLogs.forEach(log => {
+                    switch(log.status) {
+                        case 'mastered': totalScore += 100; break;
+                        case 'practicing': totalScore += 60; break;
+                        case 'pending': totalScore += 30; break;
+                        default: totalScore += 30;
+                    }
+                });
+                return Math.min(100, totalScore / dimLogs.length);
             });
             
-            const total = dimCounts.reduce((a, b) => a + b, 0);
-            const dimPercent = dimCounts.map(count => total > 0 ? Math.round((count / total) * 100) : 0);
+            if (window.homeChart) {
+                window.homeChart.destroy();
+            }
             
-            const ctx = document.getElementById('matrixRadarChart').getContext('2d');
-            if (matrixRadarChart) matrixRadarChart.destroy();
-            matrixRadarChart = new Chart(ctx, {
+            window.homeChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: DIMENSIONS.map(d => d.name),
+                    labels: dimensions.map(d => d.name),
                     datasets: [{
-                        label: '问题分布 (%)',
-                        data: dimPercent,
+                        label: '能力评估',
+                        data: dimensionScores,
                         backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderColor: 'rgb(59, 130, 246)',
-                        pointBackgroundColor: DIMENSIONS.map(d => d.color),
+                        borderColor: '#3b82f6',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#3b82f6',
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: DIMENSIONS.map(d => d.color),
-                        borderWidth: 2,
-                        pointRadius: 4
+                        pointHoverBorderColor: '#3b82f6'
                     }]
                 },
                 options: {
@@ -1421,19 +1523,11 @@
                         r: {
                             beginAtZero: true,
                             max: 100,
-                            ticks: { 
-                                stepSize: 20,
-                                display: false
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: 12
-                                }
+                            ticks: {
+                                stepSize: 20
                             }
                         }
                     },
-                    responsive: true,
-                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             display: false
@@ -1441,102 +1535,692 @@
                     }
                 }
             });
+        }
+        
+        // 解析并保存报告
+        function parseAndSaveReport() {
+            const reportText = document.getElementById('ai-report').value.trim();
+            if (!reportText) {
+                alert('请粘贴AI老师的分析报告');
+                return;
+            }
             
-            const homeCtx = document.getElementById('homeRadarChart').getContext('2d');
-            if (homeRadarChart) homeRadarChart.destroy();
-            homeRadarChart = new Chart(homeCtx, {
+            try {
+                // 解析报告
+                const parsedReport = parseAIReport(reportText);
+                
+                // 保存报告
+                analysisReports.push(parsedReport.report);
+                localStorage.setItem('analysisReports', JSON.stringify(analysisReports));
+                
+                // 保存训练日志
+                parsedReport.issues.forEach(issue => {
+                    trainingLogs.push(issue);
+                });
+                localStorage.setItem('trainingLogs', JSON.stringify(trainingLogs));
+                
+                // 显示预览
+                showParsePreview(parsedReport);
+                
+                // 更新界面
+                updateStats();
+                renderLogsTable();
+                renderReports();
+                updateMatrixChart('error');
+                renderWarehouse();
+                updateTrainingChart();
+                
+                alert('分析报告已保存！');
+                
+                // 自动打开复盘浮层
+                openReviewOverlay(parsedReport.report.id);
+                
+            } catch (error) {
+                console.error('解析错误:', error);
+                alert('解析报告时出错，请检查格式是否正确\n\n常见错误：\n1. 维度名称格式不正确\n2. 缺少必要字段\n3. 格式标记不完整');
+            }
+        }
+        
+        // 解析AI报告（新模板格式）
+        function parseAIReport(text) {
+            const report = {
+                id: Date.now(),
+                title: extractField(text, '【新闻标题】', '\n'),
+                date: extractField(text, '【分析日期】', '\n') || new Date().toISOString().split('T')[0],
+                summary: extractField(text, '【核心问题】', '\n'),
+                fullText: text
+            };
+            
+            // 提取六维度评估
+            const dimensionAssessments = {};
+            dimensions.forEach(dim => {
+                const pattern = new RegExp(`${dim.name}：([^\\n]+)`);
+                const match = text.match(pattern);
+                if (match) {
+                    dimensionAssessments[dim.id] = match[1].trim();
+                }
+            });
+            report.dimensionAssessments = dimensionAssessments;
+            
+            // 提取维度覆盖信息
+            const coveredMatch = text.match(/已覆盖：([^\n]+)/);
+            const missedMatch = text.match(/未覆盖：([^\n]+)/);
+            
+            if (coveredMatch) {
+                report.coveredAreas = coveredMatch[1].split(/[，,]/).map(item => item.trim()).filter(item => item);
+            }
+            
+            if (missedMatch) {
+                report.missedAreas = missedMatch[1].split(/[，,]/).map(item => item.trim()).filter(item => item);
+            }
+            
+            // 解析问题点
+            const issues = [];
+            
+            // 使用新的正则表达式匹配问题点格式
+            const issueRegex = /(\d+)\.\s*所属维度：([^\n]+)\s*具体子项：([^\n]+)\s*错误原话：([^\n]+)\s*优化建议：([^\n]+)\s*思维与原理：([^\n]+)/g;
+            let match;
+            let issueCount = 0;
+            
+            while ((match = issueRegex.exec(text)) !== null) {
+                issueCount++;
+                const dimensionText = match[2].trim();
+                const subItem = match[3].trim();
+                const wrongExpression = match[4].trim();
+                const suggestion = match[5].trim();
+                const thinking = match[6].trim();
+                
+                // 使用智能提取维度ID
+                const dimension = smartExtractDimension(dimensionText);
+                
+                // 提取错误思维和正确思维
+                let wrongThinking = '', correctThinking = '';
+                if (thinking.includes('规避的思维=') && thinking.includes('优化依据=')) {
+                    wrongThinking = thinking.split('规避的思维=')[1]?.split('；')[0] || '';
+                    correctThinking = thinking.split('优化依据=')[1] || '';
+                } else {
+                    // 备用解析逻辑
+                    const parts = thinking.split('；');
+                    if (parts.length >= 2) {
+                        wrongThinking = parts[0].replace('规避的思维=', '').trim();
+                        correctThinking = parts[1].replace('优化依据=', '').trim();
+                    }
+                }
+                
+                issues.push({
+                    id: Date.now() + issueCount,
+                    reportId: report.id,
+                    dimension: dimension,
+                    subItem: subItem,
+                    wrongExpression: wrongExpression,
+                    suggestion: suggestion,
+                    wrongThinking: wrongThinking,
+                    correctThinking: correctThinking,
+                    status: 'pending',
+                    date: new Date().toISOString().split('T')[0]
+                });
+            }
+            
+            // 如果正则匹配失败，尝试备用解析
+            if (issues.length === 0) {
+                console.log('使用备用解析逻辑...');
+                const backupIssues = parseBackupIssues(text);
+                issues.push(...backupIssues);
+            }
+            
+            return { report, issues };
+        }
+        
+        // 备用解析逻辑
+        function parseBackupIssues(text) {
+            const issues = [];
+            const lines = text.split('\n');
+            let currentIssue = null;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                
+                if (line.match(/^\d+\.\s*所属维度：/)) {
+                    if (currentIssue) {
+                        issues.push(completeIssue(currentIssue));
+                    }
+                    
+                    currentIssue = {
+                        dimensionText: line.replace(/^\d+\.\s*所属维度：/, '').trim(),
+                        subItem: '',
+                        wrongExpression: '',
+                        suggestion: '',
+                        thinking: ''
+                    };
+                } else if (currentIssue) {
+                    if (line.startsWith('具体子项：')) {
+                        currentIssue.subItem = line.replace('具体子项：', '').trim();
+                    } else if (line.startsWith('错误原话：')) {
+                        currentIssue.wrongExpression = line.replace('错误原话：', '').trim();
+                    } else if (line.startsWith('优化建议：')) {
+                        currentIssue.suggestion = line.replace('优化建议：', '').trim();
+                    } else if (line.startsWith('思维与原理：')) {
+                        currentIssue.thinking = line.replace('思维与原理：', '').trim();
+                    } else if (currentIssue.wrongExpression && !currentIssue.suggestion) {
+                        // 处理多行错误原话
+                        currentIssue.wrongExpression += ' ' + line;
+                    } else if (currentIssue.suggestion && !currentIssue.thinking) {
+                        // 处理多行优化建议
+                        currentIssue.suggestion += ' ' + line;
+                    }
+                }
+            }
+            
+            if (currentIssue) {
+                issues.push(completeIssue(currentIssue));
+            }
+            
+            return issues;
+        }
+        
+        function completeIssue(issueData) {
+            const dimension = smartExtractDimension(issueData.dimensionText);
+            
+            let wrongThinking = '', correctThinking = '';
+            if (issueData.thinking.includes('规避的思维=') && issueData.thinking.includes('优化依据=')) {
+                wrongThinking = issueData.thinking.split('规避的思维=')[1]?.split('；')[0] || '';
+                correctThinking = issueData.thinking.split('优化依据=')[1] || '';
+            }
+            
+            return {
+                id: Date.now() + Math.random(),
+                reportId: 0,
+                dimension: dimension,
+                subItem: issueData.subItem || '未分类',
+                wrongExpression: issueData.wrongExpression,
+                suggestion: issueData.suggestion,
+                wrongThinking: wrongThinking,
+                correctThinking: correctThinking,
+                status: 'pending',
+                date: new Date().toISOString().split('T')[0]
+            };
+        }
+        
+        // 提取字段
+        function extractField(text, start, end) {
+            const startIndex = text.indexOf(start);
+            if (startIndex === -1) return '';
+            
+            const endIndex = text.indexOf(end, startIndex + start.length);
+            if (endIndex === -1) return text.substring(startIndex + start.length).trim();
+            
+            return text.substring(startIndex + start.length, endIndex).trim();
+        }
+        
+        // 显示解析预览
+        function showParsePreview(parsedReport) {
+            const preview = document.getElementById('parse-preview');
+            preview.innerHTML = `
+                <div style="background: var(--success-light); border: 1px solid var(--success); border-radius: var(--border-radius); padding: 12px;">
+                    <h3 style="margin: 0 0 8px 0; color: var(--success);">解析成功！</h3>
+                    <p style="margin: 4px 0;"><strong>报告标题：</strong>${parsedReport.report.title}</p>
+                    <p style="margin: 4px 0;"><strong>发现问题：</strong>${parsedReport.issues.length}个</p>
+                    <p style="margin: 4px 0;"><strong>涉及维度：</strong>${[...new Set(parsedReport.issues.map(i => i.dimension))].map(d => `维度${d}`).join(', ')}</p>
+                    ${parsedReport.report.coveredAreas ? `<p style="margin: 4px 0;"><strong>已覆盖维度：</strong>${parsedReport.report.coveredAreas.join(', ')}</p>` : ''}
+                    ${parsedReport.report.missedAreas ? `<p style="margin: 4px 0;"><strong>遗漏维度：</strong>${parsedReport.report.missedAreas.join(', ')}</p>` : ''}
+                </div>
+            `;
+        }
+        
+        // 清空报告
+        function clearReport() {
+            if (confirm('确定要清空当前内容吗？')) {
+                document.getElementById('ai-report').value = '';
+                document.getElementById('parse-preview').innerHTML = '';
+            }
+        }
+        
+        // 渲染训练日志表格
+        function renderLogsTable(filteredLogs = trainingLogs) {
+            const tbody = document.getElementById('logs-table-body');
+            const emptyMsg = document.getElementById('logs-empty');
+            
+            if (filteredLogs.length === 0) {
+                tbody.innerHTML = '';
+                emptyMsg.style.display = 'block';
+                return;
+            }
+            
+            emptyMsg.style.display = 'none';
+            
+            let html = '';
+            filteredLogs.forEach((log, index) => {
+                const dim = dimensions[log.dimension - 1];
+                const tagClass = `tag-${dim.name === '立论与立场' ? 'logic' : 
+                                 dim.name === '逻辑与结构' ? 'logic' : 
+                                 dim.name === '论据与信息' ? 'evidence' : 
+                                 dim.name === '表达与修辞' ? 'expression' : 
+                                 dim.name === '思维模式' ? 'thinking' : 'communication'}`;
+                
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><span class="ability-tag ${tagClass}">${dim.name}：${log.subItem}</span></td>
+                        <td><div class="avoid-quote">"${log.wrongExpression}"</div></td>
+                        <td><div class="suggestion">${log.suggestion}</div></td>
+                        <td class="thinking">
+                            <div><span class="avoid-thinking">规避的思维：</span>${log.wrongThinking}</div>
+                            <div><span class="principle">优化依据：</span>${log.correctThinking}</div>
+                        </td>
+                        <td>${log.date}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        // 筛选日志
+        function filterLogs() {
+            const dimensionFilter = document.getElementById('filter-dimension').value;
+            const statusFilter = document.getElementById('filter-status').value;
+            
+            let filteredLogs = trainingLogs;
+            
+            if (dimensionFilter !== 'all') {
+                filteredLogs = filteredLogs.filter(log => log.dimension == dimensionFilter);
+            }
+            
+            if (statusFilter !== 'all') {
+                filteredLogs = filteredLogs.filter(log => log.status === statusFilter);
+            }
+            
+            renderLogsTable(filteredLogs);
+        }
+        
+        // 渲染分析报告
+        function renderReports() {
+            const container = document.getElementById('reports-list');
+            
+            if (analysisReports.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--gray-500); padding: 20px;">暂无分析报告</p>';
+                return;
+            }
+            
+            let html = '';
+            analysisReports.forEach(report => {
+                // 获取该报告相关的训练日志
+                const reportLogs = trainingLogs.filter(log => log.reportId === report.id);
+                const uniqueDimensions = [...new Set(reportLogs.map(log => log.dimension))];
+                
+                html += `
+                    <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 16px; margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="margin: 0;">${report.title}</h3>
+                            <span style="color: var(--gray-600); font-size: 0.9rem;">${report.date}</span>
+                        </div>
+                        <p style="margin: 8px 0; color: var(--gray-700);">${report.summary}</p>
+                        
+                        <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px;">
+                            ${uniqueDimensions.map(dim => {
+                                const dimension = dimensions[dim - 1];
+                                const tagClass = `tag-${dimension.name === '立论与立场' ? 'logic' : 
+                                                dimension.name === '逻辑与结构' ? 'logic' : 
+                                                dimension.name === '论据与信息' ? 'evidence' : 
+                                                dimension.name === '表达与修辞' ? 'expression' : 
+                                                dimension.name === '思维模式' ? 'thinking' : 'communication'}`;
+                                return `<span class="ability-tag ${tagClass}">${dimension.name}</span>`;
+                            }).join('')}
+                        </div>
+                        
+                        <!-- 维度覆盖标签 -->
+                        ${report.coveredAreas && report.coveredAreas.length > 0 ? `
+                            <div style="margin-top: 8px;">
+                                <div style="font-size: 0.8rem; color: var(--gray-600); margin-bottom: 2px;">已覆盖维度：</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                    ${report.coveredAreas.map(area => 
+                                        `<span style="background: #d1fae5; color: #065f46; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;">${area}</span>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        ${report.missedAreas && report.missedAreas.length > 0 ? `
+                            <div style="margin-top: 8px;">
+                                <div style="font-size: 0.8rem; color: var(--gray-600); margin-bottom: 2px;">遗漏维度：</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                    ${report.missedAreas.map(area => 
+                                        `<span style="background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem;">${area}</span>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                            <button style="background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; cursor: pointer;"
+                                    onclick="openReviewOverlay(${report.id})">
+                                📊 维度复盘
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        // 更新能力矩阵图表
+        function updateMatrixChart(mode = 'error') {
+            const ctx = document.getElementById('matrixRadarChart').getContext('2d');
+            
+            // 计算数据
+            const labels = dimensions.map(d => d.name);
+            let data = [];
+            
+            if (mode === 'error') {
+                // 错误频率模式：计算每个维度的错误数量
+                data = dimensions.map(dim => {
+                    return trainingLogs.filter(log => log.dimension === dim.id).length;
+                });
+            } else {
+                // 盲区地图模式：计算每个维度的遗漏次数
+                data = dimensions.map(dim => {
+                    let missedCount = 0;
+                    analysisReports.forEach(report => {
+                        if (report.missedAreas) {
+                            report.missedAreas.forEach(area => {
+                                if (smartExtractDimension(area) === dim.id) {
+                                    missedCount++;
+                                }
+                            });
+                        }
+                    });
+                    return missedCount;
+                });
+            }
+            
+            if (window.matrixChart) {
+                window.matrixChart.destroy();
+            }
+            
+            window.matrixChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: DIMENSIONS.map(d => d.name.substring(3)),
+                    labels: labels,
                     datasets: [{
-                        label: '问题数量',
-                        data: dimCounts,
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderColor: 'rgb(59, 130, 246)',
-                        pointBackgroundColor: DIMENSIONS.map(d => d.color),
+                        label: mode === 'error' ? '错误频率' : '盲区频率',
+                        data: data,
+                        backgroundColor: mode === 'error' ? 'rgba(239, 68, 68, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                        borderColor: mode === 'error' ? '#ef4444' : '#3b82f6',
+                        borderWidth: 2,
+                        pointBackgroundColor: mode === 'error' ? '#ef4444' : '#3b82f6',
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: DIMENSIONS.map(d => d.color),
-                        borderWidth: 2,
-                        pointRadius: 4
+                        pointHoverBorderColor: mode === 'error' ? '#ef4444' : '#3b82f6'
                     }]
                 },
                 options: {
                     scales: {
                         r: {
                             beginAtZero: true,
-                            ticks: { 
-                                display: false
-                            },
-                            pointLabels: {
-                                font: {
-                                    size: 11
-                                }
+                            ticks: {
+                                precision: 0
                             }
-                        }
-                    },
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
                         }
                     }
                 }
             });
         }
-
-        // 筛选日志
-        function filterLogs() {
-            const dimFilter = document.getElementById('filter-dimension').value;
-            const statusFilter = document.getElementById('filter-status').value;
+        
+        // 切换雷达图模式
+        function switchRadarMode(mode) {
+            // 更新按钮状态
+            document.querySelectorAll('.switch-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
             
-            let filteredIssues = sampleData.issues;
-            
-            if (dimFilter !== 'all') {
-                filteredIssues = filteredIssues.filter(issue => issue.dimension == dimFilter);
-            }
-            
-            if (statusFilter !== 'all') {
-                filteredIssues = filteredIssues.filter(issue => issue.status === statusFilter);
-            }
-            
-            currentFilteredIssues = filteredIssues;
-            renderLogsTable(filteredIssues);
+            // 更新图表
+            updateMatrixChart(mode);
         }
-
-        // 切换导出菜单显示/隐藏
+        
+        // 渲染能力仓库
+        function renderWarehouse() {
+            const container = document.getElementById('dimension-warehouse');
+            
+            // 按维度分组
+            const dimensionGroups = {};
+            trainingLogs.forEach(log => {
+                if (!dimensionGroups[log.dimension]) {
+                    dimensionGroups[log.dimension] = {};
+                }
+                if (!dimensionGroups[log.dimension][log.subItem]) {
+                    dimensionGroups[log.dimension][log.subItem] = [];
+                }
+                dimensionGroups[log.dimension][log.subItem].push(log);
+            });
+            
+            let html = '';
+            
+            dimensions.forEach(dim => {
+                const subItems = dimensionGroups[dim.id];
+                if (!subItems) return;
+                
+                const totalCount = Object.values(subItems).reduce((sum, logs) => sum + logs.length, 0);
+                
+                html += `
+                    <div style="background: white; border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 16px; margin-bottom: 12px;">
+                        <h3 style="margin-bottom: 8px;"><span class="ability-tag tag-${dim.name === '立论与立场' ? 'logic' : 
+                            dim.name === '逻辑与结构' ? 'logic' : 
+                            dim.name === '论据与信息' ? 'evidence' : 
+                            dim.name === '表达与修辞' ? 'expression' : 
+                            dim.name === '思维模式' ? 'thinking' : 'communication'}">${dim.name}</span> (${totalCount}个问题)</h3>
+                `;
+                
+                for (const subItem in subItems) {
+                    const logs = subItems[subItem];
+                    html += `
+                        <div style="margin-left: 16px; margin-bottom: 8px;">
+                            <p style="margin: 4px 0;"><strong>${subItem}</strong> (${logs.length}个)</p>
+                            ${logs.slice(0, 2).map(log => `
+                                <p style="margin: 4px 0; font-size: 0.9rem; color: var(--gray-600);">${log.wrongExpression}</p>
+                            `).join('')}
+                            ${logs.length > 2 ? `<p style="font-size: 0.8rem; color: var(--gray-500);">...还有${logs.length - 2}个类似问题</p>` : ''}
+                        </div>
+                    `;
+                }
+                
+                html += `</div>`;
+            });
+            
+            container.innerHTML = html || '<p style="text-align: center; color: var(--gray-500);">暂无数据</p>';
+        }
+        
+        // 更新训练频率图表
+        function updateTrainingChart() {
+            const ctx = document.getElementById('trainingFrequencyChart').getContext('2d');
+            
+            // 计算最近30天的训练数据
+            const last30Days = [];
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                last30Days.push(date.toISOString().split('T')[0]);
+            }
+            
+            const dailyCounts = last30Days.map(date => {
+                return trainingLogs.filter(log => log.date === date).length;
+            });
+            
+            if (window.trainingChart) {
+                window.trainingChart.destroy();
+            }
+            
+            window.trainingChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: last30Days.map(d => d.split('-')[1] + '/' + d.split('-')[2]),
+                    datasets: [{
+                        label: '每日训练次数',
+                        data: dailyCounts,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 渲染日历
+        function renderCalendar() {
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+            
+            // 更新月份显示
+            document.getElementById('current-month').textContent = `${year}年${month + 1}月`;
+            
+            // 计算日历
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const firstDayIndex = firstDay.getDay();
+            
+            // 清空日历
+            const calendarDays = document.getElementById('calendar-days');
+            calendarDays.innerHTML = '';
+            
+            // 添加空白天
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day empty';
+                calendarDays.appendChild(emptyDay);
+            }
+            
+            // 添加日期
+            const today = new Date().toISOString().split('T')[0];
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.setAttribute('data-date', dateStr);
+                
+                if (dateStr === today) {
+                    dayElement.classList.add('today');
+                }
+                
+                // 检查该日期是否有训练数据
+                const hasData = trainingLogs.some(log => log.date === dateStr) || 
+                               analysisReports.some(report => report.date === dateStr);
+                
+                if (hasData) {
+                    dayElement.classList.add('has-data');
+                }
+                
+                const dayContent = document.createElement('div');
+                dayContent.className = 'calendar-day-content';
+                dayContent.innerHTML = `
+                    <div class="calendar-day-number">${day}</div>
+                    ${hasData ? '<div class="calendar-indicator"></div>' : ''}
+                `;
+                
+                dayElement.appendChild(dayContent);
+                dayElement.addEventListener('click', () => showCalendarDetail(dateStr));
+                calendarDays.appendChild(dayElement);
+            }
+        }
+        
+        // 切换月份
+        function changeMonth(delta) {
+            currentMonth.setMonth(currentMonth.getMonth() + delta);
+            renderCalendar();
+        }
+        
+        // 显示日历详情
+        function showCalendarDetail(date) {
+            const detailContainer = document.getElementById('calendar-detail');
+            
+            // 获取该日期的数据
+            const dayLogs = trainingLogs.filter(log => log.date === date);
+            const dayReports = analysisReports.filter(report => report.date === date);
+            
+            if (dayLogs.length === 0 && dayReports.length === 0) {
+                detailContainer.innerHTML = `
+                    <div class="calendar-detail-empty">
+                        ${date} 没有训练记录
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = `
+                <div class="calendar-detail-title">${date} 的训练情况</div>
+            `;
+            
+            // 显示报告
+            dayReports.forEach(report => {
+                html += `
+                    <div class="calendar-detail-item">
+                        <h4>📄 ${report.title}</h4>
+                        <p>${report.summary}</p>
+                    </div>
+                `;
+            });
+            
+            // 显示训练日志
+            dayLogs.forEach(log => {
+                const dim = dimensions[log.dimension - 1];
+                html += `
+                    <div class="calendar-detail-item">
+                        <h4>📝 ${dim.name}: ${log.subItem}</h4>
+                        <p><strong>问题：</strong>${log.wrongExpression.substring(0, 50)}...</p>
+                        <p><strong>改进：</strong>${log.suggestion.substring(0, 50)}...</p>
+                    </div>
+                `;
+            });
+            
+            detailContainer.innerHTML = html;
+        }
+        
+        // 导出功能
         function toggleExportMenu() {
             const dropdown = document.getElementById('export-dropdown');
             dropdown.classList.toggle('show');
         }
-
+        
+        // 关闭所有下拉菜单
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.export-container')) {
+                document.getElementById('export-dropdown').classList.remove('show');
+            }
+        });
+        
         // 打开导出选项弹窗
-        function openExportOptions(type) {
-            currentExportType = type;
+        function openExportOptions(format) {
             document.getElementById('export-modal').classList.add('show');
-            document.getElementById('export-dropdown').classList.remove('show');
-            
-            // 设置默认筛选值
-            document.getElementById('export-date-range').value = 'all';
-            document.getElementById('export-dimension').value = 'all';
-            document.getElementById('export-status').value = 'all';
+            document.getElementById('export-modal').dataset.format = format;
         }
-
+        
         // 关闭导出选项弹窗
         function closeExportModal() {
             document.getElementById('export-modal').classList.remove('show');
         }
-
-        // 获取筛选后的数据
-        function getFilteredData() {
+        
+        // 导出筛选后的数据
+        function exportFilteredData(format) {
             const dateRange = document.getElementById('export-date-range').value;
-            const dimFilter = document.getElementById('export-dimension').value;
+            const dimensionFilter = document.getElementById('export-dimension').value;
             const statusFilter = document.getElementById('export-status').value;
             
-            let filteredData = [...sampleData.issues];
+            // 筛选数据
+            let filteredLogs = [...trainingLogs];
             
-            // 日期范围筛选
             if (dateRange !== 'all') {
                 const now = new Date();
                 const cutoffDate = new Date();
@@ -1556,341 +2240,287 @@
                         break;
                 }
                 
-                filteredData = filteredData.filter(issue => {
-                    if (!issue.recordDate) return false;
-                    const issueDate = new Date(issue.recordDate);
-                    return issueDate >= cutoffDate;
+                filteredLogs = filteredLogs.filter(log => {
+                    const logDate = new Date(log.date);
+                    return logDate >= cutoffDate;
                 });
             }
             
-            // 维度筛选
-            if (dimFilter !== 'all') {
-                filteredData = filteredData.filter(issue => issue.dimension == dimFilter);
+            if (dimensionFilter !== 'all') {
+                filteredLogs = filteredLogs.filter(log => log.dimension == dimensionFilter);
             }
             
-            // 状态筛选
             if (statusFilter !== 'all') {
-                filteredData = filteredData.filter(issue => issue.status === statusFilter);
+                filteredLogs = filteredLogs.filter(log => log.status === statusFilter);
             }
             
-            return filteredData;
-        }
-
-        // 导出筛选后的数据
-        function exportFilteredData(type) {
-            const data = getFilteredData();
-            
-            if (data.length === 0) {
-                alert('没有数据可导出，请调整筛选条件');
-                return;
-            }
-            
-            if (type === 'excel') {
-                exportToExcel(data);
-            } else if (type === 'word') {
-                exportToWord(data);
+            if (format === 'excel') {
+                exportToExcel(filteredLogs);
+            } else if (format === 'word') {
+                exportToWord(filteredLogs);
             }
             
             closeExportModal();
         }
-
+        
         // 导出到Excel
-        function exportToExcel(data) {
-            try {
-                // 准备Excel数据
-                const excelData = data.map((issue, index) => {
-                    const dim = DIMENSIONS.find(d => d.id == issue.dimension) || DIMENSIONS[3];
-                    const statusMap = {
-                        'pending': '未开始',
-                        'practicing': '练习中',
-                        'mastered': '已掌握'
-                    };
-                    
-                    return {
-                        '序号': index + 1,
-                        '能力维度': dim.name,
-                        '具体子项': issue.subItem,
-                        '规避错误表达': issue.wrong,
-                        '校准建议': issue.suggestion,
-                        '思维与原理': issue.thinking,
-                        '状态': statusMap[issue.status] || '未开始',
-                        '记录日期': issue.recordDate || ''
-                    };
-                });
-                
-                // 创建工作表
-                const ws = XLSX.utils.json_to_sheet(excelData);
-                
-                // 设置列宽
-                const wscols = [
-                    {wch: 6},   // 序号
-                    {wch: 15},  // 能力维度
-                    {wch: 15},  // 具体子项
-                    {wch: 40},  // 规避错误表达
-                    {wch: 40},  // 校准建议
-                    {wch: 40},  // 思维与原理
-                    {wch: 10},  // 状态
-                    {wch: 12}   // 记录日期
-                ];
-                ws['!cols'] = wscols;
-                
-                // 创建工作簿
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, '能力训练日志');
-                
-                // 生成文件名
-                const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-                const fileName = `能力训练日志_${dateStr}.xlsx`;
-                
-                // 导出Excel文件
-                XLSX.writeFile(wb, fileName);
-                
-                alert(`已成功导出 ${data.length} 条记录到Excel文件`);
-            } catch (error) {
-                console.error('导出Excel失败:', error);
-                alert('导出Excel失败，请检查控制台错误信息');
-            }
+        function exportToExcel(logs) {
+            const data = logs.map((log, index) => ({
+                '序号': index + 1,
+                '维度': `维度${log.dimension}: ${dimensions[log.dimension-1].name}`,
+                '具体子项': log.subItem,
+                '错误表达': log.wrongExpression,
+                '优化建议': log.suggestion,
+                '错误思维': log.wrongThinking,
+                '正确思维': log.correctThinking,
+                '状态': getStatusText(log.status),
+                '记录日期': log.date
+            }));
+            
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, '训练日志');
+            
+            const fileName = `训练日志_${new Date().toISOString().split('T')[0]}.xlsx`;
+            XLSX.writeFile(wb, fileName);
         }
-
+        
         // 导出到Word
-        function exportToWord(data) {
-            try {
-                // 创建Word文档内容
-                let htmlContent = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <style>
-                        body { font-family: 'Microsoft YaHei', sans-serif; margin: 20px; }
-                        h1 { color: #1e293b; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; }
-                        h2 { color: #334155; margin-top: 20px; }
-                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-                        th { background: #f0f8ff; color: #1e293b; padding: 10px; border: 1px solid #cbd5e1; text-align: left; font-weight: bold; }
-                        td { padding: 10px; border: 1px solid #cbd5e1; vertical-align: top; }
-                        .tag { display: inline-block; background: rgba(59, 130, 246, 0.1); color: #1d4ed8; padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(59, 130, 246, 0.2); font-size: 12px; }
-                        .wrong { font-style: italic; color: #991b1b; padding-left: 8px; border-left: 2px solid #ef4444; margin: 5px 0; }
-                        .suggestion { color: #065f46; padding-left: 8px; border-left: 2px solid #10b981; margin: 5px 0; }
-                        .info { margin: 5px 0; font-size: 12px; color: #475569; }
-                        .dimension-1 { background: rgba(59, 130, 246, 0.1); color: #1d4ed8; }
-                        .dimension-2 { background: rgba(139, 92, 246, 0.1); color: #5b21b6; }
-                        .dimension-3 { background: rgba(245, 158, 11, 0.1); color: #92400e; }
-                        .dimension-4 { background: rgba(239, 68, 68, 0.1); color: #991b1b; }
-                        .dimension-5 { background: rgba(16, 185, 129, 0.1); color: #065f46; }
-                        .dimension-6 { background: rgba(236, 72, 153, 0.1); color: #9d174d; }
-                    </style>
-                </head>
-                <body>
-                    <h1>能力训练日志</h1>
-                    <p>导出时间：${new Date().toLocaleString('zh-CN')}</p>
-                    <p>总记录数：${data.length} 条</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>序号</th>
-                                <th>能力维度</th>
-                                <th>具体子项</th>
-                                <th>规避错误表达</th>
-                                <th>校准建议</th>
-                                <th>状态</th>
-                                <th>记录日期</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-                
-                data.forEach((issue, index) => {
-                    const dim = DIMENSIONS.find(d => d.id == issue.dimension) || DIMENSIONS[3];
-                    const statusMap = {
-                        'pending': '未开始',
-                        'practicing': '练习中',
-                        'mastered': '已掌握'
-                    };
-                    
-                    htmlContent += `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td><span class="tag dimension-${issue.dimension}">${dim.name}</span></td>
-                                <td>${issue.subItem}</td>
-                                <td><div class="wrong">${issue.wrong}</div></td>
-                                <td><div class="suggestion">${issue.suggestion}</div></td>
-                                <td>${statusMap[issue.status] || '未开始'}</td>
-                                <td>${issue.recordDate || ''}</td>
-                            </tr>`;
-                });
-                
-                htmlContent += `
-                        </tbody>
-                    </table>
-                </body>
-                </html>`;
-                
-                const blob = new Blob([htmlContent], { type: 'application/msword' });
-                const fileName = `能力训练日志_${new Date().toISOString().slice(0,10)}.doc`;
-                saveAs(blob, fileName);
-                
-                alert(`已成功导出 ${data.length} 条记录到Word文件`);
-            } catch (error) {
-                console.error('导出Word失败:', error);
-                alert('导出Word失败，请检查控制台错误信息');
-            }
+        function exportToWord(logs) {
+            const content = `
+                <h1>训练日志导出</h1>
+                <p>导出时间：${new Date().toLocaleString()}</p>
+                <p>记录数量：${logs.length}</p>
+                <hr>
+                ${logs.map((log, index) => `
+                    <h3>记录 ${index + 1}</h3>
+                    <p><strong>维度：</strong>维度${log.dimension}: ${dimensions[log.dimension-1].name}</p>
+                    <p><strong>具体子项：</strong>${log.subItem}</p>
+                    <p><strong>错误表达：</strong>${log.wrongExpression}</p>
+                    <p><strong>优化建议：</strong>${log.suggestion}</p>
+                    <p><strong>错误思维：</strong>${log.wrongThinking}</p>
+                    <p><strong>正确思维：</strong>${log.correctThinking}</p>
+                    <p><strong>状态：</strong>${getStatusText(log.status)}</p>
+                    <p><strong>记录日期：</strong>${log.date}</p>
+                    <hr>
+                `).join('')}
+            `;
+            
+            const blob = new Blob([content], { type: 'application/msword' });
+            const fileName = `训练日志_${new Date().toISOString().split('T')[0]}.doc`;
+            saveAs(blob, fileName);
         }
-
+        
         // 导出所有数据
         function exportAllData() {
-            const data = sampleData.issues;
-            if (data.length === 0) {
-                alert('没有数据可导出');
-                return;
-            }
+            const allData = {
+                trainingLogs: trainingLogs,
+                analysisReports: analysisReports,
+                exportTime: new Date().toISOString()
+            };
             
-            // 导出Excel格式
-            exportToExcel(data);
+            const dataStr = JSON.stringify(allData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const fileName = `能力训练系统_全量数据_${new Date().toISOString().split('T')[0]}.json`;
+            saveAs(dataBlob, fileName);
         }
-
         
-// 解析并保存报告
-        function parseAndSaveReport() {
-            const reportText = document.getElementById('ai-report').value.trim();
-            if (!reportText) {
-                alert("请输入分析报告内容");
-                return;
+        // 获取状态文本
+        function getStatusText(status) {
+            switch(status) {
+                case 'pending': return '未开始';
+                case 'practicing': return '练习中';
+                case 'mastered': return '已掌握';
+                default: return status;
             }
-            
-            alert("解析功能需要后端支持。在本地版本中，您可以查看预置的赖清德新闻分析示例。");
         }
-
-        // 清空报告输入框
-        function clearReport() {
-            document.getElementById('ai-report').value = "";
-            document.getElementById('parse-preview').innerHTML = '';
-        }
-
-        // 初始化日历数据
-        function initCalendarData() {
-            calendarData = {};
+        
+        // 复盘浮层相关功能
+        const dimensionConfigs = {
+            news: {
+                core: ['事件定性', '背景分析', '影响评估', '官方回应', '舆论反应'],
+                extended: ['历史脉络', '国际关联', '法律依据', '数据支撑', '专家观点']
+            },
+            social: {
+                core: ['现象描述', '原因分析', '社会影响', '解决方案', '民众反应'],
+                extended: ['历史比较', '群体差异', '政策关联', '文化因素', '媒体报道']
+            },
+            tech: {
+                core: ['技术原理', '应用场景', '优势劣势', '发展趋势', '行业影响'],
+                extended: ['竞品对比', '用户反馈', '投资情况', '政策环境', '安全风险']
+            },
+            culture: {
+                core: ['文化内涵', '价值解读', '时代背景', '社会意义', '个人感受'],
+                extended: ['历史溯源', '比较分析', '创新表达', '传播方式', '受众反应']
+            },
+            economics: {
+                core: ['经济数据', '趋势分析', '影响因素', '政策评估', '市场反应'],
+                extended: ['国际比较', '行业影响', '风险预警', '投资建议', '长期展望']
+            },
+            personal: {
+                core: ['观点陈述', '论证过程', '情感表达', '价值判断', '自我反思'],
+                extended: ['逻辑验证', '事实核查', '视角扩展', '改进方向', '实践应用']
+            }
+        };
+        
+        let currentType = 'news';
+        let currentReportId = null;
+        
+        // 渲染维度选项
+        function renderDimensions() {
+            const config = dimensionConfigs[currentType];
             
-            // 从示例数据中提取有记录的日期
-            sampleData.issues.forEach(issue => {
-                if (issue.recordDate) {
-                    if (!calendarData[issue.recordDate]) {
-                        calendarData[issue.recordDate] = [];
+            const coreContainer = document.getElementById('coreDimensions');
+            coreContainer.innerHTML = '';
+            config.core.forEach((dimension, index) => {
+                coreContainer.innerHTML += `
+                    <div class="option-item">
+                        <input type="checkbox" id="core_${index}" class="option-checkbox">
+                        <label for="core_${index}" class="option-label">${dimension}</label>
+                    </div>
+                `;
+            });
+            
+            const extendedContainer = document.getElementById('extendedDimensions');
+            extendedContainer.innerHTML = '';
+            config.extended.forEach((dimension, index) => {
+                extendedContainer.innerHTML += `
+                    <div class="option-item">
+                        <input type="checkbox" id="ext_${index}" class="option-checkbox">
+                        <label for="ext_${index}" class="option-label">${dimension}</label>
+                    </div>
+                `;
+            });
+        }
+        
+        // 设置分析类型
+        function setAnalysisType(type) {
+            currentType = type;
+            
+            document.querySelectorAll('.type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderDimensions();
+        }
+        
+        // 打开复盘浮层
+        function openReviewOverlay(reportId) {
+            currentReportId = reportId;
+            document.getElementById('reviewOverlay').classList.add('active');
+            
+            // 重置所有复选框
+            document.querySelectorAll('.option-checkbox').forEach(cb => cb.checked = false);
+            document.getElementById('customInput').value = '';
+            
+            // 从报告中提取维度覆盖信息，自动勾选
+            const report = analysisReports.find(r => r.id === reportId);
+            if (report && report.coveredAreas) {
+                autoFillReviewForm(report);
+            }
+        }
+        
+        // 自动填充复盘表单
+        function autoFillReviewForm(report) {
+            if (!report.coveredAreas) return;
+            
+            // 将已覆盖的维度转换为关键词列表
+            const coveredKeywords = [];
+            report.coveredAreas.forEach(area => {
+                // 提取维度名称部分
+                const dimMatch = area.match(/维度[一二三四五六]_([^_]+)/);
+                if (dimMatch) {
+                    coveredKeywords.push(dimMatch[1]);
+                } else {
+                    // 如果不是标准格式，尝试提取可能的关键词
+                    coveredKeywords.push(area);
+                }
+            });
+            
+            // 勾选匹配的选项
+            document.querySelectorAll('.option-label').forEach(label => {
+                const labelText = label.textContent;
+                // 检查标签文本是否包含任何已覆盖的关键词
+                if (coveredKeywords.some(keyword => labelText.includes(keyword))) {
+                    const checkbox = label.previousElementSibling;
+                    if (checkbox) {
+                        checkbox.checked = true;
                     }
-                    calendarData[issue.recordDate].push(issue);
                 }
             });
         }
-
-        // 渲染日历
-        function renderCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
+        
+        // 关闭复盘浮层
+        function closeReviewOverlay() {
+            document.getElementById('reviewOverlay').classList.remove('active');
+            currentReportId = null;
             
-            document.getElementById('current-month').textContent = `${year}年${month + 1}月`;
-            
-            const firstDay = new Date(year, month, 1);
-            const firstDayWeekday = firstDay.getDay();
-            
-            const lastDay = new Date(year, month + 1, 0);
-            const daysInMonth = lastDay.getDate();
-            
-            const today = new Date();
-            const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-            
-            let calendarHTML = '';
-            
-            // 填充上个月的日期
-            const prevMonthLastDay = new Date(year, month, 0).getDate();
-            for (let i = 0; i < firstDayWeekday; i++) {
-                calendarHTML += `<div class="calendar-day empty"></div>`;
-            }
-            
-            // 填充当月日期
-            for (let day = 1; day <= daysInMonth; day++) {
-                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const hasData = calendarData[dateStr] && calendarData[dateStr].length > 0;
-                const isToday = dateStr === todayStr;
-                const isSelected = selectedDate === dateStr;
-                
-                let dayClass = 'calendar-day';
-                if (isToday) dayClass += ' today';
-                if (hasData) dayClass += ' has-data';
-                if (isSelected) dayClass += ' selected';
-                
-                calendarHTML += `
-                <div class="${dayClass}" data-date="${dateStr}" onclick="selectDate('${dateStr}')">
-                    <div class="calendar-day-content">
-                        <div class="calendar-day-number">${day}</div>
-                        ${hasData ? '<div class="calendar-indicator"></div>' : ''}
-                    </div>
-                </div>`;
-            }
-            
-            // 填充下个月的日期
-            const totalCells = 42;
-            const remainingCells = totalCells - (firstDayWeekday + daysInMonth);
-            for (let i = 0; i < remainingCells; i++) {
-                calendarHTML += `<div class="calendar-day empty"></div>`;
-            }
-            
-            document.getElementById('calendar-days').innerHTML = calendarHTML;
-            
-            if (selectedDate) {
-                showDateDetail(selectedDate);
-            }
+            // 重置表单
+            document.querySelectorAll('.option-checkbox').forEach(cb => cb.checked = false);
+            document.getElementById('customInput').value = '';
         }
-
-        // 选择日期
-        function selectDate(dateStr) {
-            selectedDate = dateStr;
-            renderCalendar();
-            showDateDetail(dateStr);
-        }
-
-        // 显示日期详情
-        function showDateDetail(dateStr) {
-            const detailContainer = document.getElementById('calendar-detail');
-            const issues = calendarData[dateStr];
-            
-            if (!issues || issues.length === 0) {
-                detailContainer.innerHTML = `
-                    <div class="calendar-detail-empty">
-                        ${dateStr} 没有训练记录
-                    </div>
-                `;
+        
+        // 保存复盘结果
+        function saveReview() {
+            if (!currentReportId) {
+                alert('未找到对应的分析报告');
                 return;
             }
             
-            let detailHTML = `
-                <div class="calendar-detail-title">${dateStr} 的训练记录 (${issues.length}条)</div>
-            `;
+            const data = {
+                type: currentType,
+                core: [],
+                extended: [],
+                custom: []
+            };
             
-            issues.forEach((issue, index) => {
-                const dim = DIMENSIONS.find(d => d.id == issue.dimension) || DIMENSIONS[3];
-                const tagClass = dim.tagClass || 'ability-tag';
-                
-                detailHTML += `
-                <div class="calendar-detail-item">
-                    <h4><span class="ability-tag ${tagClass}">${dim.name}：${issue.subItem}</span></h4>
-                    <p><strong>原话：</strong>${issue.wrong}</p>
-                    <p><strong>建议：</strong>${issue.suggestion}</p>
-                    <p><strong>状态：</strong>${issue.status === 'mastered' ? '已掌握' : issue.status === 'practicing' ? '练习中' : '未开始'}</p>
-                </div>
-                `;
+            // 收集核心维度
+            document.querySelectorAll('#coreDimensions .option-checkbox:checked').forEach(cb => {
+                const label = cb.nextElementSibling.textContent;
+                data.core.push(label);
             });
             
-            detailContainer.innerHTML = detailHTML;
+            // 收集扩展维度
+            document.querySelectorAll('#extendedDimensions .option-checkbox:checked').forEach(cb => {
+                const label = cb.nextElementSibling.textContent;
+                data.extended.push(label);
+            });
+            
+            // 收集自定义维度
+            const customInput = document.getElementById('customInput');
+            if (customInput.value.trim()) {
+                data.custom = customInput.value.split(',').map(item => item.trim()).filter(item => item);
+            }
+            
+            // 保存到报告
+            const reportIndex = analysisReports.findIndex(r => r.id === currentReportId);
+            if (reportIndex !== -1) {
+                const coveredAreas = [...data.core, ...data.extended, ...data.custom];
+                
+                // 计算遗漏维度
+                const config = dimensionConfigs[currentType];
+                const missedCore = config.core.filter(item => !data.core.includes(item));
+                const missedExtended = config.extended.filter(item => !data.extended.includes(item));
+                const missedAreas = [...missedCore, ...missedExtended];
+                
+                // 更新报告
+                analysisReports[reportIndex].coveredAreas = coveredAreas;
+                analysisReports[reportIndex].missedAreas = missedAreas;
+                
+                // 保存到本地存储
+                localStorage.setItem('analysisReports', JSON.stringify(analysisReports));
+                
+                console.log('复盘数据已保存:', { covered: coveredAreas, missed: missedAreas });
+                alert('复盘结果已保存！');
+                
+                // 更新界面
+                renderReports();
+                updateMatrixChart('blindspot');
+            }
+            
+            closeReviewOverlay();
         }
-
-        // 切换月份
-        function changeMonth(delta) {
-            currentDate.setMonth(currentDate.getMonth() + delta);
-            renderCalendar();
-        }
-
-        // 初始化矩阵图表
-        setTimeout(() => {
-            updateMatrixChart();
-        }, 100);
     </script>
 </body>
 </html>
