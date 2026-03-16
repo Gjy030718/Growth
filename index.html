@@ -266,20 +266,21 @@
         .logs-header {
             margin-bottom: 12px;
         }
-        .logs-title-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .ogs-title-row {
+    /* 移除flex布局，让标题独占一行*/
+            width: 100%;
             margin-bottom: 8px;
         }
         .logs-header h2 {
-            display: inline-block;
-            border-bottom: 2px solid var(--primary-light);
-            padding-bottom: 6px;
-            color: var(--gray-800);
-            font-size: 1rem;
-            margin: 0;
+    /* 移除display: inline-block，让标题占据整行宽度 */
+    width: 100%;
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: 6px;
+    color: var(--gray-800);
+    font-size: 1rem;
+    margin: 0 0 8px 0; /* 添加下边距，与筛选框保持间距 */
         }
+
         .logs-filters-row {
             margin-top: 8px;
         }
@@ -818,11 +819,10 @@
         <!-- 训练日志页面 - 已优化布局 -->
         <section id="logs">
             <div class="logs-header">
-                <div class="logs-title-row">
-                    <h2>训练日志</h2>
-                </div>
-                <div class="logs-filters-row">
-                    <div class="logs-filters">
+              <h2>训练日志</h2>
+              <div class="logs-filters">
+              </div>
+            </div>
                         <select id="filter-dimension" onchange="filterLogs()" class="filter-select">
                             <option value="all">全部维度</option>
                             <option value="1">维度一：立论与立场</option>
