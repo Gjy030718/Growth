@@ -669,180 +669,268 @@
 
         /* 复盘浮层样式 */
         .review-overlay {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
-            max-width: 480px;
-            height: 100vh;
-            background: var(--surface-color);
-            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            z-index: 1000;
-        }
-        
-        .review-overlay.active {
-            transform: translateX(0);
-        }
-        
-        .overlay-header {
-            padding: 16px 20px 12px;
-            border-bottom: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-        
-        .overlay-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-        
-        .overlay-subtitle {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-        
-        .overlay-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 20px;
-        }
-        
-        .analysis-type {
-            margin-bottom: 16px;
-        }
-        
-        .type-buttons {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 6px;
-        }
-        
-        /* 分析类型标签按钮文字增大到14px */
-        .type-btn {
-            padding: 6px 12px;
-            background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 14px; /* 从13px增大到14px */
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .type-btn.active {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            color: var(--primary);
-            font-weight: 500;
-        }
-        
-        .dimension-section {
-            margin-bottom: 16px;
-        }
-        
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        
-        /* 三个大类标题文字增大到15px */
-        .section-title {
-            font-size: 15px; /* 从14px增大到15px */
-            font-weight: 600;
-            color: var(--text);
-        }
-        
-        .section-badge {
-            font-size: 11px;
-            padding: 1px 6px;
-            background: var(--background);
-            border-radius: 8px;
-            color: var(--text-light);
-        }
-        
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 6px;
-        }
-        
-        .option-item {
-            display: flex;
-            align-items: center;
-        }
-        
-        .option-checkbox {
-            display: none;
-        }
-        
-        .option-label {
-            display: block;
-            width: 100%;
-            padding: 8px 10px;
-            background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 12px;
-            color: var(--text);
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-            line-height: 1.2;
-        }
-        
-        .option-checkbox:checked + .option-label {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            color: var(--primary);
-            font-weight: 500;
-        }
-        
-        .other-input {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1.5px solid var(--border);
-            border-radius: 6px;
-            font-size: 12px;
-            margin-top: 8px;
-        }
-        
-        .overlay-footer {
-            padding: 12px 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        
-        .footer-btn {
-            flex: 1;
-            padding: 10px;
-            border-radius: var(--radius);
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-        }
-        
-        .cancel-btn {
-            background: var(--background);
-            color: var(--text-light);
-            border: 1px solid var(--border);
-        }
-        
-        .save-btn {
-            background: var(--primary);
-            color: white;
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 100%;
+          max-width: 480px;
+          height: 100vh;
+          background: white;
+          box-shadow: -4px 0 25px rgba(0,0,0,0.15);
+          transform: translateX(100%);
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          display: flex;
+          flex-direction: column;
+          z-index: 1000;
         }
 
+.review-overlay.active {
+    transform: translateX(0);
+}
+
+.overlay-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+    flex-shrink: 0;
+}
+
+.overlay-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+}
+
+.overlay-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+.overlay-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+    background: #f9fafb;
+}
+
+.analysis-type {
+    margin-bottom: 24px;
+    background: white;
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.type-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* 分析类型标签按钮文字增大到14px */
+.type-btn {
+    padding: 8px 16px;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    min-width: 80px;
+    text-align: center;
+}
+
+.type-btn:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.type-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.dimension-section {
+    margin-bottom: 24px;
+    background: white;
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+/* 三个大类标题文字增大到15px */
+.section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title:before {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 16px;
+    background: #3b82f6;
+    border-radius: 2px;
+}
+
+.section-badge {
+    font-size: 11px;
+    padding: 4px 10px;
+    background: #f3f4f6;
+    border-radius: 20px;
+    color: #6b7280;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+}
+
+.option-checkbox {
+    display: none;
+}
+
+.option-label {
+    display: block;
+    width: 100%;
+    padding: 12px 8px;
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.3;
+    font-weight: 500;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-label:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+}
+
+.option-checkbox:checked + .option-label {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    color: #1e40af;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.other-input-container {
+    margin-top: 16px;
+    background: white;
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.other-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #374151;
+    background: #f9fafb;
+    transition: all 0.2s ease;
+}
+
+.other-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.other-input::placeholder {
+    color: #9ca3af;
+}
+
+.overlay-footer {
+    padding: 20px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+    background: white;
+}
+
+.footer-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
+}
+
+.cancel-btn {
+    background: white;
+    color: #6b7280;
+    border: 2px solid #e5e7eb;
+}
+
+.cancel-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: #4b5563;
+}
+
+.save-btn {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.save-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+  }
         /* 雷达图切换按钮 */
         .radar-switch {
             display: flex;
@@ -1181,57 +1269,62 @@
         </div>
     </div>
 
-    <!-- 复盘浮层 -->
-    <div class="review-overlay" id="reviewOverlay">
-        <div class="overlay-header">
-            <div class="overlay-title">分析维度复盘</div>
-            <div class="overlay-subtitle">标记已覆盖和遗漏的分析维度</div>
-        </div>
-        
-        <div class="overlay-content">
-            <div class="analysis-type">
-                <div class="section-title">分析类型</div>
-                <div class="type-buttons">
-                    <button class="type-btn active" onclick="setAnalysisType('news')">时政新闻</button>
-                    <button class="type-btn" onclick="setAnalysisType('social')">社会事件</button>
-                    <button class="type-btn" onclick="setAnalysisType('tech')">科技文章</button>
-                    <button class="type-btn" onclick="setAnalysisType('culture')">文化评论</button>
-                    <button class="type-btn" onclick="setAnalysisType('economics')">经济分析</button>
-                    <button class="type-btn" onclick="setAnalysisType('personal')">个人感悟</button>
-                </div>
-            </div>
-            
-            <div class="dimension-section">
-                <div class="section-header">
-                    <div class="section-title">核心分析维度</div>
-                    <div class="section-badge">必选</div>
-                </div>
-                <div class="options-grid" id="coreDimensions">
-                    <!-- 动态生成 -->
-                </div>
-            </div>
-            
-            <div class="dimension-section">
-                <div class="section-header">
-                    <div class="section-title">扩展维度</div>
-                    <div class="section-badge">选填</div>
-                </div>
-                <div class="options-grid" id="extendedDimensions">
-                    <!-- 动态生成 -->
-                </div>
-            </div>
-            
-            <div class="dimension-section">
-                <div class="section-title">自定义维度</div>
-                <input type="text" class="other-input" id="customInput" placeholder="输入自定义分析维度，用逗号分隔">
+    <!-- 复盘浮层 - 现代化设计 -->
+<div class="review-overlay" id="reviewOverlay">
+    <div class="overlay-header">
+        <div class="overlay-title">分析维度复盘</div>
+        <div class="overlay-subtitle">标记已覆盖和遗漏的分析维度</div>
+    </div>
+    
+    <div class="overlay-content">
+        <!-- 分析类型 -->
+        <div class="analysis-type">
+            <div class="section-title">分析类型</div>
+            <div class="type-buttons">
+                <button class="type-btn active" onclick="setAnalysisType('news')">时政新闻</button>
+                <button class="type-btn" onclick="setAnalysisType('social')">社会事件</button>
+                <button class="type-btn" onclick="setAnalysisType('tech')">科技文章</button>
+                <button class="type-btn" onclick="setAnalysisType('culture')">文化评论</button>
+                <button class="type-btn" onclick="setAnalysisType('economics')">经济分析</button>
+                <button class="type-btn" onclick="setAnalysisType('personal')">个人感悟</button>
             </div>
         </div>
         
-        <div class="overlay-footer">
-            <button class="footer-btn cancel-btn" onclick="closeReviewOverlay()">取消</button>
-            <button class="footer-btn save-btn" onclick="saveReview()">保存</button>
+        <!-- 核心分析维度 -->
+        <div class="dimension-section">
+            <div class="section-header">
+                <div class="section-title">核心分析维度</div>
+                <div class="section-badge">必选</div>
+            </div>
+            <div class="options-grid" id="coreDimensions">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 扩展维度 -->
+        <div class="dimension-section">
+            <div class="section-header">
+                <div class="section-title">扩展维度</div>
+                <div class="section-badge">选填</div>
+            </div>
+            <div class="options-grid" id="extendedDimensions">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+        
+        <!-- 自定义维度 -->
+        <div class="other-input-container">
+            <div class="section-title">自定义维度</div>
+            <input type="text" class="other-input" id="customInput" placeholder="输入自定义分析维度，用逗号分隔">
         </div>
     </div>
+    
+    <!-- 底部操作按钮 -->
+    <div class="overlay-footer">
+        <button class="footer-btn cancel-btn" onclick="closeReviewOverlay()">取消</button>
+        <button class="footer-btn save-btn" onclick="saveReview()">保存</button>
+    </div>
+</div>
 
     <script>
 // 数据存储
