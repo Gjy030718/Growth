@@ -667,114 +667,22 @@
             color: var(--gray-700);
         }
 
-        /* 复盘浮层样式 */
-        .review-overlay {
-          position: fixed;
-          top: 0;
-          right: 0;
-          width: 100%;
-          max-width: 480px;
-          height: 100vh;
-          background: white;
-          box-shadow: -4px 0 25px rgba(0,0,0,0.15);
-          transform: translateX(100%);
-          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          display: flex;
-          flex-direction: column;
-          z-index: 1000;
-        }
-
-.review-overlay.active {
-    transform: translateX(0);
-}
-
-.overlay-header {
-    padding: 20px 24px 16px;
-    border-bottom: 1px solid #e5e7eb;
-    background: #f9fafb;
-    flex-shrink: 0;
-}
-
-.overlay-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 4px;
-    letter-spacing: -0.3px;
-}
-
-.overlay-subtitle {
-    font-size: 13px;
-    color: #6b7280;
-    font-weight: 400;
-}
-
-.overlay-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px 24px;
-    background: #f9fafb;
-}
-
-.analysis-type {
-    margin-bottom: 24px;
-    background: white;
-    border-radius: 12px;
-    padding: 18px 20px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.type-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-/* 分析类型标签按钮文字增大到14px */
-.type-btn {
-    padding: 8px 16px;
-    background: #f9fafb;
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #4b5563;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-weight: 500;
-    min-width: 80px;
-    text-align: center;
-}
-
-.type-btn:hover {
-    background: #f3f4f6;
-    border-color: #d1d5db;
-}
-
-.type-btn.active {
-    background: #3b82f6;
-    border-color: #3b82f6;
-    color: white;
-    font-weight: 600;
-    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
-}
 
 .dimension-section {
-    margin-bottom: 24px;
+    margin-bottom: 12px;  /* 减小卡片间距 */
     background: white;
-    border-radius: 12px;
-    padding: 18px 20px;
+    border-radius: 8px;   /* 减小圆角 */
+    padding: 4px 12px;   /* 减小内边距 */
     border: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);  /* 减小阴影 */
 }
 
 .section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    margin-bottom: 2px;   /* 减小标题与下面内容的距离 */
+    padding-bottom: 2px;  /* 减小标题与横线的距离 */
     border-bottom: 1px solid #f3f4f6;
 }
 
@@ -786,13 +694,14 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-bottom: 2px;  /* 减小标题文字与下面内容的距离 */
 }
 
 .section-title:before {
     content: "";
     display: block;
     width: 4px;
-    height: 16px;
+    height: 6px;
     background: #3b82f6;
     border-radius: 2px;
 }
@@ -809,8 +718,8 @@
 
 .options-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;  /* 减小间距 */
 }
 
 .option-item {
@@ -825,18 +734,18 @@
 .option-label {
     display: block;
     width: 100%;
-    padding: 12px 8px;
+    padding: 8px 6px;  /* 减小内边距 */
     background: #f9fafb;
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 13px;
+    border: 1px solid #e5e7eb;  /* 减小边框 */
+    border-radius: 6px;  /* 减小圆角 */
+    font-size: 12px;  /* 减小字体大小 */
     color: #374151;
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
-    line-height: 1.3;
+    line-height: 1.2;  /* 减小行高 */
     font-weight: 500;
-    min-height: 44px;
+    min-height: 32px;  /* 减小最小高度 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -857,20 +766,20 @@
 }
 
 .other-input-container {
-    margin-top: 16px;
+    margin-top: 8px;      /* 减小上边距 */
     background: white;
-    border-radius: 12px;
-    padding: 18px 20px;
+    border-radius: 8px;   /* 减小圆角 */
+    padding: 12px 16px;   /* 减小内边距 */
     border: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);  /* 减小阴影 */
 }
 
 .other-input {
     width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e5e7eb;
-    border-radius: 8px;
-    font-size: 13px;
+    padding: 8px 12px;  /* 减小内边距 */
+    border: 1px solid #e5e7eb;  /* 减小边框 */
+    border-radius: 6px;  /* 减小圆角 */
+    font-size: 12px;  /* 减小字体大小 */
     color: #374151;
     background: #f9fafb;
     transition: all 0.2s ease;
@@ -887,25 +796,31 @@
     color: #9ca3af;
 }
 
+/*浮层按钮样式的第一处*/
 .overlay-footer {
-    padding: 20px 24px;
+    padding: 12px 16px;
     border-top: 1px solid #e5e7eb;
     display: flex;
-    gap: 12px;
+    gap: 8px;
     flex-shrink: 0;
     background: white;
+    margin-top: auto;
+        /* 新增：粘性定位，使其始终停留在底部 */
+    position: sticky;
+    bottom: 0;
+        /* 可选：增加一个轻微的上阴影，与内容区产生视觉分离 */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .footer-btn {
     flex: 1;
     padding: 14px 20px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     border: none;
     transition: all 0.2s ease;
-    letter-spacing: 0.3px;
 }
 
 .cancel-btn {
@@ -961,6 +876,197 @@
             color: white;
             border-color: var(--primary);
         }
+/* ============ 复盘浮层核心样式 ============ */
+.review-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    background: white;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;  /* 防止内容溢出 */
+}
+
+.review-overlay.active {
+    transform: translateX(0);
+}
+
+/* 浮层头部样式 */
+.overlay-header {
+    padding: 12px 20px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+    flex-shrink: 0;
+    /* 新增以下三行，实现标题与按钮的水平并排布局 */
+    display: flex;
+    justify-content: space-between; /* 标题文字靠左，按钮容器靠右 */
+    align-items: center; /* 垂直居中对齐 */
+}
+
+/* 左侧标题文字容器 */
+.header-text {
+    flex: 1;
+    min-width: 0;
+    margin-right: 15px;
+}
+/* 右侧按钮容器 */
+.header-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+/* 调整标题栏内的按钮样式 */
+.header-actions .footer-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+.header-actions .cancel-btn {
+    background: white;
+    color: #6b7280;
+    border: 1.5px solid #d1d5db;
+}
+.header-actions .cancel-btn:hover {
+    background: #f9fafb;
+    border-color: #9ca3af;
+}
+.header-actions .save-btn {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+.header-actions .save-btn:hover {
+    background: #2563eb;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+}
+
+.overlay-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2px;  /* 减小下边距 */
+    letter-spacing: -0.3px;
+}
+
+.overlay-subtitle {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 400;
+}
+
+/* 浮层内容区域 */
+.overlay-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;  /* 减小内边距 */
+    background: #f9fafb;
+    max-height: calc(100vh - 140px);
+}
+
+/* 分析类型区块样式 */
+.analysis-type {
+    margin-bottom: 10px;  /* 减小卡片间距 */
+    background: white;
+    border-radius: 8px;   /* 减小圆角 */
+    padding: 6px 16px;   /* 减小内边距 */
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);  /* 减小阴影 */
+}
+
+/* 分析类型按钮样式 - 改为两行，每行3个 */
+.type-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;  /* 减小间距 */
+    margin-top: 8px;
+}
+
+.type-btn {
+    padding: 6px 8px;  /* 减小内边距 */
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;  /* 减小边框 */
+    border-radius: 6px;  /* 减小圆角 */
+    font-size: 12px;  /* 减小字体大小 */
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    white-space: nowrap;  /* 防止文字换行 */
+    overflow: hidden;
+    text-overflow: ellipsis;  /* 文字过长时显示省略号 */
+    text-align: center;
+}
+
+.type-btn:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.type-btn.active {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+/* 维度区块标题样式 */
+.section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+/* 底部按钮样式 */
+
+
+.footer-btn {
+    flex: 1;
+    padding: 10px 12px;  /* 减小内边距 */
+    border-radius: 6px;  /* 减小圆角 */
+    font-size: 13px;  /* 减小字体大小 */
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.cancel-btn {
+    background: white;
+    color: #6b7280;
+    border: 2px solid #e5e7eb;
+}
+
+.cancel-btn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+    color: #4b5563;
+}
+
+.save-btn {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+
+.save-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
     </style>
 </head>
 <body>
@@ -1272,9 +1378,17 @@
     <!-- 复盘浮层 - 现代化设计 -->
 <div class="review-overlay" id="reviewOverlay">
     <div class="overlay-header">
+    <div class="header-text">
         <div class="overlay-title">分析维度复盘</div>
         <div class="overlay-subtitle">标记已覆盖和遗漏的分析维度</div>
     </div>
+    <!-- 将按钮容器移入标题区，放在右侧 -->
+    <div class="header-actions">
+        <button class="footer-btn cancel-btn" onclick="closeReviewOverlay()">取消</button>
+        <button class="footer-btn save-btn" onclick="saveReview()">保存</button>
+    </div>
+</div>
+
     
     <div class="overlay-content">
         <!-- 分析类型 -->
@@ -1317,30 +1431,29 @@
             <div class="section-title">自定义维度</div>
             <input type="text" class="other-input" id="customInput" placeholder="输入自定义分析维度，用逗号分隔">
         </div>
-    </div>
+   </div>
     
-    <!-- 底部操作按钮 -->
-    <div class="overlay-footer">
-        <button class="footer-btn cancel-btn" onclick="closeReviewOverlay()">取消</button>
-        <button class="footer-btn save-btn" onclick="saveReview()">保存</button>
-    </div>
-</div>
+   
+           <!-- 底部操作按钮 -->
+       
 
-    <script>
-// 数据存储
-        let trainingLogs = JSON.parse(localStorage.getItem('trainingLogs') || '[]');
-        let analysisReports = JSON.parse(localStorage.getItem('analysisReports') || '[]');
-        let currentMonth = new Date();
+
+<script>
+ // 数据存储        
+let trainingLogs = JSON.parse(localStorage.getItem('trainingLogs') || '[]');
+let analysisReports = JSON.parse(localStorage.getItem('analysisReports') || '[]');
+let currentMonth = new Date();
         
-        // 六维度定义
-        const dimensions = [
-            { id: 1, name: '立论与立场', color: '#8b5cf6' },
-            { id: 2, name: '逻辑与结构', color: '#3b82f6' },
-            { id: 3, name: '论据与信息', color: '#f59e0b' },
-            { id: 4, name: '表达与修辞', color: '#ef4444' },
-            { id: 5, name: '思维模式', color: '#10b981' },
-            { id: 6, name: '传播与效果', color: '#ec4899' }
-        ];
+        
+// 六维度定义
+const dimensions = [
+  { id: 1, name: '立论与立场', color: '#8b5cf6' },
+  { id: 2, name: '逻辑与结构', color: '#3b82f6' },
+  { id: 3, name: '论据与信息', color: '#f59e0b' },
+  { id: 4, name: '表达与修辞', color: '#ef4444' },
+  { id: 5, name: '思维模式', color: '#10b981' },
+  { id: 6, name: '传播与效果', color: '#ec4899' }
+];
         
         // 子项定义
         const subItems = {
